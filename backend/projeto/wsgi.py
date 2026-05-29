@@ -1,0 +1,12 @@
+"""
+WSGI config for projeto.
+"""
+
+import os
+
+from django.core.wsgi import get_wsgi_application
+
+# Aponta para as suas configurações
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'projeto.settings')
+
+application = get_wsgi_application()

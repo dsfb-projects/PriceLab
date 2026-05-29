@@ -1,0 +1,280 @@
+
+<h2 class="sr-only">Painel de resultados dos modelos de regressão e elasticidade — Expandir Franquias</h2>
+
+<style>
+.tabs{display:flex;gap:4px;margin-bottom:1.5rem;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:0}
+.tab{padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--color-text-secondary);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.active{color:var(--color-text-primary);border-bottom-color:var(--color-text-primary)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.5rem}
+.metric{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.9rem 1rem}
+.metric-label{font-size:12px;color:var(--color-text-secondary);margin:0 0 4px}
+.metric-val{font-size:20px;font-weight:500;color:var(--color-text-primary);margin:0}
+.metric-val.neg{color:var(--color-text-danger)}
+.metric-val.ok{color:var(--color-text-success)}
+.metric-val.warn{color:var(--color-text-warning)}
+.sec{font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.07em;margin:1.5rem 0 .6rem}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem}
+.card-title{font-size:13px;font-weight:500;color:var(--color-text-secondary);margin:0 0 12px;text-transform:uppercase;letter-spacing:.05em}
+.elast-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px}
+.elast-label{width:130px;color:var(--color-text-secondary);flex-shrink:0;font-size:12px}
+.elast-track{flex:1;height:20px;background:var(--color-background-secondary);border-radius:4px;overflow:hidden;position:relative}
+.elast-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:12px;font-weight:500;white-space:nowrap}
+.bar-pos{background:var(--color-background-info);color:var(--color-text-info)}
+.bar-neg{background:var(--color-background-danger);color:var(--color-text-danger)}
+.bar-neu{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.data-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:13px}
+.data-row:last-child{border-bottom:none}
+.badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500}
+.sig3{background:var(--color-background-success);color:var(--color-text-success)}
+.sig1{background:var(--color-background-warning);color:var(--color-text-warning)}
+.sig0{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.slider-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.slider-row label{font-size:13px;color:var(--color-text-secondary);width:130px;flex-shrink:0}
+.slider-row input{flex:1}
+.slider-row span{font-size:13px;font-weight:500;min-width:60px;text-align:right}
+.price-result{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1rem;margin-top:1rem}
+.price-line{display:flex;justify-content:space-between;font-size:14px;padding:4px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.price-line:last-child{border-bottom:none;font-weight:500;font-size:15px}
+</style>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('expansao')">Expansão</button>
+  <button class="tab" onclick="showTab('formatacao')">Formatação</button>
+  <button class="tab" onclick="showTab('validacao')">Validação</button>
+  <button class="tab" onclick="showTab('preco')">Calculadora de Preço</button>
+  <button class="tab" onclick="showTab('elasticidade')">Curvas de Elasticidade</button>
+</div>
+
+<div id="tab-expansao" class="tab-panel active">
+  <p class="sec">Modelo 1 — Y = Custo Total</p>
+  <div class="metrics">
+    <div class="metric"><p class="metric-label">R²</p><p class="metric-val warn">0.297</p></div>
+    <div class="metric"><p class="metric-label">R² ajustado</p><p class="metric-val warn">0.249</p></div>
+    <div class="metric"><p class="metric-label">MAE</p><p class="metric-val">R$ 993</p></div>
+    <div class="metric"><p class="metric-label">Custo/contrato</p><p class="metric-val">R$ 3.128</p></div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <p class="card-title">Coeficientes β (M1)</p>
+      <div class="data-row"><span>β₀ Intercepto (fixo)</span><span>R$ 7.092 <span class="badge sig1">p=0.018</span></span></div>
+      <div class="data-row"><span>β₁ Qtd_Contratos</span><span>R$ 1.897/ct <span class="badge sig3">p=0.009</span></span></div>
+      <div class="data-row"><span>β₂ H_Total</span><span>R$ −5,25/h <span class="badge sig0">p=0.822</span></span></div>
+      <div class="data-row"><span>β₃ Num_Mes</span><span>R$ −88,66 <span class="badge sig0">p=0.144</span></span></div>
+    </div>
+    <div class="card">
+      <p class="card-title">Elasticidades — ponto na média</p>
+      <div style="margin-bottom:6px;font-size:12px;color:var(--color-text-secondary)">ε = β × (X̄ / Ȳ)</div>
+      <div class="elast-row"><span class="elast-label">ε Qtd_Contratos</span><div class="elast-track"><div class="elast-fill bar-pos" style="width:61%">+0.606</div></div></div>
+      <div class="elast-row"><span class="elast-label">ε H_Total</span><div class="elast-track"><div class="elast-fill bar-neg" style="width:8%">−0.080</div></div></div>
+      <div class="elast-row"><span class="elast-label">ε Num_Mes</span><div class="elast-track"><div class="elast-fill bar-neg" style="width:4%">−0.042</div></div></div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-top:10px">+1% em Qtd → +0.61% no custo</div>
+    </div>
+  </div>
+  <p class="sec">Modelo 2 — Y = Margem %</p>
+  <div class="metrics">
+    <div class="metric"><p class="metric-label">R²</p><p class="metric-val neg">0.015</p></div>
+    <div class="metric"><p class="metric-label">Margem média obs.</p><p class="metric-val ok">48.2%</p></div>
+    <div class="metric"><p class="metric-label">Interpretação</p><p class="metric-val" style="font-size:13px">Modelo fraco</p></div>
+    <div class="metric"><p class="metric-label">Preço ideal (30%)</p><p class="metric-val">R$ 4.469</p></div>
+  </div>
+  <div class="card"><p class="card-title">Leitura</p><p style="font-size:13px;color:var(--color-text-secondary);margin:0">A margem da Expansão já é saudável (48%). O M2 com R²=0.015 indica que as variáveis escolhidas não explicam bem a variação de margem — sugerindo que o <strong>mix de tier de preço</strong> (R$3k vs R$10k) é o principal driver de margem, não o volume ou as horas.</p></div>
+</div>
+
+<div id="tab-formatacao" class="tab-panel">
+  <p class="sec">Modelo 1 — Y = Custo Total</p>
+  <div class="metrics">
+    <div class="metric"><p class="metric-label">R²</p><p class="metric-val warn">0.119</p></div>
+    <div class="metric"><p class="metric-label">R² ajustado</p><p class="metric-val neg">0.080</p></div>
+    <div class="metric"><p class="metric-label">MAE</p><p class="metric-val">R$ 2.174</p></div>
+    <div class="metric"><p class="metric-label">Custo/contrato</p><p class="metric-val">R$ 18.501</p></div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <p class="card-title">Coeficientes β (M1)</p>
+      <div class="data-row"><span>β₀ Intercepto (fixo)</span><span>R$ 9.307 <span class="badge sig3">p=0.005</span></span></div>
+      <div class="data-row"><span>β₁ Qtd_Contratos</span><span>R$ 9.307/ct <span class="badge sig3">p=0.005</span></span></div>
+      <div class="data-row"><span>β₂ H_Total</span><span>R$ −22,45/h <span class="badge sig0">p=0.760</span></span></div>
+      <div class="data-row"><span>β₃ Num_Mes</span><span>R$ +274,62 <span class="badge sig1">p=0.021</span></span></div>
+    </div>
+    <div class="card">
+      <p class="card-title">Elasticidades — ponto na média</p>
+      <div style="margin-bottom:6px;font-size:12px;color:var(--color-text-secondary)">ε = β × (X̄ / Ȳ)</div>
+      <div class="elast-row"><span class="elast-label">ε Qtd_Contratos</span><div class="elast-track"><div class="elast-fill bar-pos" style="width:50%">+0.503</div></div></div>
+      <div class="elast-row"><span class="elast-label">ε H_Total</span><div class="elast-track"><div class="elast-fill bar-neg" style="width:10%">−0.103</div></div></div>
+      <div class="elast-row"><span class="elast-label">ε Num_Mes</span><div class="elast-track"><div class="elast-fill bar-pos" style="width:10%">+0.097</div></div></div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-top:10px">Custo cresce com o tempo — sinal de estrutura em expansão</div>
+    </div>
+  </div>
+  <p class="sec">Modelo 2 — Y = Margem %</p>
+  <div class="metrics">
+    <div class="metric"><p class="metric-label">R²</p><p class="metric-val warn">0.185</p></div>
+    <div class="metric"><p class="metric-label">Margem média obs.</p><p class="metric-val ok">61.9%</p></div>
+    <div class="metric"><p class="metric-label">Preço ideal (30%)</p><p class="metric-val">R$ 26.430</p></div>
+    <div class="metric"><p class="metric-label">Preço mínimo atual</p><p class="metric-val ok">R$ 34.500</p></div>
+  </div>
+  <div class="card"><p class="card-title">Leitura</p><p style="font-size:13px;color:var(--color-text-secondary);margin:0">Formatação é o serviço com <strong>melhores margens</strong> (61,9%) e o preço atual (R$34.500) supera confortavelmente o custo. O M2 indica que mais horas reduzem a margem — validando que controlar o tempo de consultoria é crítico para escalar.</p></div>
+</div>
+
+<div id="tab-validacao" class="tab-panel">
+  <p class="sec">Modelo 1 — Y = Custo Total (R²=0.948 — excelente)</p>
+  <div class="metrics">
+    <div class="metric"><p class="metric-label">R²</p><p class="metric-val ok">0.948</p></div>
+    <div class="metric"><p class="metric-label">R² ajustado</p><p class="metric-val ok">0.941</p></div>
+    <div class="metric"><p class="metric-label">MAE</p><p class="metric-val">R$ 495</p></div>
+    <div class="metric"><p class="metric-label">Custo/contrato</p><p class="metric-val neg">R$ 10.564</p></div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <p class="card-title">Coeficientes β (M1)</p>
+      <div class="data-row"><span>β₀ Intercepto (fixo)</span><span>R$ 7.261 <span class="badge sig3">p&lt;0.001</span></span></div>
+      <div class="data-row"><span>β₁ Qtd_Contratos</span><span>R$ 4.597/ct <span class="badge sig3">p&lt;0.001</span></span></div>
+      <div class="data-row"><span>β₂ H_Total</span><span>R$ +9,42/h <span class="badge sig0">p=0.609</span></span></div>
+      <div class="data-row"><span>β₃ Num_Mes</span><span>R$ +2,64 <span class="badge sig0">p=0.945</span></span></div>
+    </div>
+    <div class="card">
+      <p class="card-title">Elasticidades — ponto na média</p>
+      <div style="margin-bottom:6px;font-size:12px;color:var(--color-text-secondary)">ε = β × (X̄ / Ȳ)</div>
+      <div class="elast-row"><span class="elast-label">ε Qtd_Contratos</span><div class="elast-track"><div class="elast-fill bar-pos" style="width:44%">+0.435</div></div></div>
+      <div class="elast-row"><span class="elast-label">ε H_Total</span><div class="elast-track"><div class="elast-fill bar-pos" style="width:6%">+0.057</div></div></div>
+      <div class="elast-row"><span class="elast-label">ε Num_Mes</span><div class="elast-track"><div class="elast-fill bar-neu" style="width:2%">+0.001</div></div></div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-top:10px">Custo inelástico a horas — β₁ Qtd domina tudo</div>
+    </div>
+  </div>
+  <p class="sec">Modelo 2 — Y = Margem % (diagnóstico crítico)</p>
+  <div class="metrics">
+    <div class="metric"><p class="metric-label">R²</p><p class="metric-val ok">0.924</p></div>
+    <div class="metric"><p class="metric-label">Margem média obs.</p><p class="metric-val neg">−13.0%</p></div>
+    <div class="metric"><p class="metric-label">Preço atual</p><p class="metric-val neg">R$ 9.900</p></div>
+    <div class="metric"><p class="metric-label">Preço ideal (30%)</p><p class="metric-val">R$ 15.091</p></div>
+  </div>
+  <div class="card" style="border-color:var(--color-border-danger)"><p class="card-title" style="color:var(--color-text-danger)">Diagnóstico: precificação deficitária</p><p style="font-size:13px;color:var(--color-text-secondary);margin:0">O modelo confirma matematicamente o que o diagnóstico qualitativo já indicava. Cada contrato de Validação fechado ao preço atual de <strong>R$9.900</strong> gera um prejuízo médio de R$664. O preço mínimo para breakeven é <strong>R$10.564</strong> e para margem de 30% é <strong>R$15.091</strong>. Reajuste necessário: +52%.</p></div>
+</div>
+
+<div id="tab-preco" class="tab-panel">
+  <p class="sec">Calculadora de preço ideal — baseada no Modelo 1</p>
+  <div class="two-col">
+    <div>
+      <div style="margin-bottom:1rem;padding:.8rem 1rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md)">
+        <p style="font-size:12px;font-weight:500;margin:0 0 8px;color:var(--color-text-secondary)">SERVIÇO</p>
+        <select id="sv-sel" onchange="calcPreco()" style="width:100%;font-size:14px">
+          <option value="expansao">Expansão</option>
+          <option value="formatacao">Formatação</option>
+          <option value="validacao">Validação</option>
+        </select>
+      </div>
+      <div class="slider-row"><label>Qtd contratos/mês</label><input type="range" id="sl-qtd" min="1" max="10" step="1" value="3" oninput="calcPreco()"><span id="out-qtd">3</span></div>
+      <div class="slider-row"><label>Horas totais</label><input type="range" id="sl-h" min="50" max="600" step="10" value="200" oninput="calcPreco()"><span id="out-h">200h</span></div>
+      <div class="slider-row"><label>Mês (1–12)</label><input type="range" id="sl-mes" min="1" max="12" step="1" value="6" oninput="calcPreco()"><span id="out-mes">6</span></div>
+      <div class="slider-row"><label>Margem alvo</label><input type="range" id="sl-mg" min="5" max="60" step="5" value="30" oninput="calcPreco()"><span id="out-mg">30%</span></div>
+    </div>
+    <div>
+      <div class="price-result" id="price-result"></div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-elasticidade" class="tab-panel">
+  <p class="sec">Curva de sensibilidade — como o custo varia com cada driver</p>
+  <div style="margin-bottom:1rem;display:flex;align-items:center;gap:12px">
+    <label style="font-size:13px;color:var(--color-text-secondary)">Driver analisado:</label>
+    <select id="driver-sel" onchange="renderElast()" style="font-size:13px">
+      <option value="qtd">Qtd Contratos</option>
+      <option value="h">H Total</option>
+    </select>
+  </div>
+  <div style="position:relative;width:100%;height:300px"><canvas id="elast-chart" role="img" aria-label="Curva de sensibilidade do custo por serviço em relação ao driver selecionado">Curva de sensibilidade do custo em relação ao número de contratos ou horas trabalhadas, por tipo de serviço.</canvas></div>
+  <div style="display:flex;gap:16px;margin-top:8px;font-size:12px;color:var(--color-text-secondary)">
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#378ADD"></span>Expansão</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#1D9E75"></span>Formatação</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#EF9F27"></span>Validação</span>
+  </div>
+  <div style="margin-top:1rem;padding:.8rem 1rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:13px;color:var(--color-text-secondary)">
+    <strong style="color:var(--color-text-primary)">Como ler a elasticidade:</strong> A inclinação de cada curva é o β da regressão. Curvas mais íngremes = maior sensibilidade do custo àquela variável. Linhas próximas do horizontal = variável pouco explicativa naquele serviço.
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const MODELOS = {
+  expansao:   { b0:7092, b1:1897, b2:-5.25,  b3:-88.66,  nome:"Expansão",   cor:"#378ADD" },
+  formatacao: { b0:9307, b1:9307, b2:-22.45,  b3:274.62,  nome:"Formatação", cor:"#1D9E75" },
+  validacao:  { b0:7261, b1:4597, b2:9.42,    b3:2.64,    nome:"Validação",  cor:"#EF9F27" },
+};
+
+function fmt(v){ return 'R$ ' + Math.round(v).toLocaleString('pt-BR'); }
+
+function calcPreco(){
+  const sv  = document.getElementById('sv-sel').value;
+  const qtd = +document.getElementById('sl-qtd').value;
+  const h   = +document.getElementById('sl-h').value;
+  const mes = +document.getElementById('sl-mes').value;
+  const mg  = +document.getElementById('sl-mg').value / 100;
+  document.getElementById('out-qtd').textContent = qtd;
+  document.getElementById('out-h').textContent   = h + 'h';
+  document.getElementById('out-mes').textContent  = mes;
+  document.getElementById('out-mg').textContent   = Math.round(mg*100) + '%';
+  const m = MODELOS[sv];
+  const custo_total = m.b0 + m.b1*qtd + m.b2*h + m.b3*mes;
+  const custo_por_c = custo_total / qtd;
+  const preco_ideal = custo_por_c / (1 - mg);
+  const preco_break = custo_por_c;
+  const r = document.getElementById('price-result');
+  r.innerHTML = `
+    <div class="price-line"><span>Custo total previsto</span><span>${fmt(custo_total)}</span></div>
+    <div class="price-line"><span>Custo por contrato</span><span>${fmt(custo_por_c)}</span></div>
+    <div class="price-line"><span>Preço de breakeven</span><span>${fmt(preco_break)}</span></div>
+    <div class="price-line"><span>Preço ideal (margem ${Math.round(mg*100)}%)</span><span style="color:var(--color-text-success)">${fmt(preco_ideal)}</span></div>
+    <div class="price-line"><span>Lucro por contrato</span><span style="color:var(--color-text-success)">${fmt(preco_ideal - custo_por_c)}</span></div>
+  `;
+}
+
+function showTab(id){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+  if(id==='elasticidade') setTimeout(renderElast,50);
+}
+
+let elChart = null;
+function renderElast(){
+  const driver = document.getElementById('driver-sel').value;
+  const isQtd  = driver === 'qtd';
+  const labels = isQtd ? [1,2,3,4,5,6,7,8,9,10] : [50,100,150,200,250,300,350,400,450,500];
+  const MES_MED = 6;
+  const H_MED   = 200;
+  const QTD_MED = 4;
+
+  const datasets = Object.entries(MODELOS).map(([k,m])=>({
+    label: m.nome,
+    data: labels.map(x => isQtd
+      ? Math.round(m.b0 + m.b1*x + m.b2*H_MED   + m.b3*MES_MED)
+      : Math.round(m.b0 + m.b1*QTD_MED + m.b2*x + m.b3*MES_MED)),
+    borderColor: m.cor,
+    backgroundColor: m.cor + '22',
+    tension: 0.3,
+    pointRadius: 3,
+    borderWidth: 2,
+  }));
+
+  if(elChart) elChart.destroy();
+  elChart = new Chart(document.getElementById('elast-chart'),{
+    type:'line',
+    data:{ labels, datasets },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:false } },
+      scales:{
+        x:{ title:{ display:true, text: isQtd ? 'Qtd contratos/mês' : 'Horas totais/mês', color:'#888' } },
+        y:{ title:{ display:true, text:'Custo total (R$)', color:'#888' },
+            ticks:{ callback: v => 'R$'+Math.round(v/1000)+'k' } }
+      }
+    }
+  });
+}
+
+calcPreco();
+setTimeout(renderElast,100);
+</script>
