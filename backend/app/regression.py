@@ -227,26 +227,39 @@ def rodar_regressao(caminho_excel):
     servicos_disponiveis = df["Tipo_Servico"].unique().tolist()
     resultados = {"_meta": {"aba_usada": aba_usada, "servicos_encontrados": servicos_disponiveis}}
 
+    def _margem_pct_media(sub_df):
+        """Média simples da margem linha a linha — igual ao =MÉDIA(Margem_PCT) do Excel."""
+        return float((sub_df["Margem_RS"] / sub_df["Receita_Total"]).mean())
+
     # Expansão
     if "Expansão" in servicos_disponiveis:
+        sub_exp  = df[df["Tipo_Servico"] == "Expansão"]
         agg_exp  = agregar(df, "Expansão")
         vars_exp = ["Qtd_Contratos", "H_Total", "Num_Mes"]
         m1_exp, _, y1_exp, _ = rodar_ols(agg_exp, vars_exp)
-        resultados["expansao"] = _empacotar_resultado(m1_exp, y1_exp, agg_exp, vars_exp)
+        r = _empacotar_resultado(m1_exp, y1_exp, agg_exp, vars_exp)
+        r["margem_observada"] = round(_margem_pct_media(sub_exp), 4)
+        resultados["expansao"] = r
 
     # Formatação
     if "Formatação" in servicos_disponiveis:
+        sub_fmt  = df[df["Tipo_Servico"] == "Formatação"]
         agg_fmt  = agregar(df, "Formatação")
         vars_fmt = ["Qtd_Contratos", "H_Total", "H_Advogado", "Num_Mes"]
         m1_fmt, _, y1_fmt, _ = rodar_ols(agg_fmt, vars_fmt)
-        resultados["formatacao"] = _empacotar_resultado(m1_fmt, y1_fmt, agg_fmt, vars_fmt)
+        r = _empacotar_resultado(m1_fmt, y1_fmt, agg_fmt, vars_fmt)
+        r["margem_observada"] = round(_margem_pct_media(sub_fmt), 4)
+        resultados["formatacao"] = r
 
     # Validação
     if "Validação" in servicos_disponiveis:
+        sub_val  = df[df["Tipo_Servico"] == "Validação"]
         agg_val  = agregar(df, "Validação")
         vars_val = ["Qtd_Contratos", "H_Total", "Num_Mes"]
         m1_val, _, y1_val, _ = rodar_ols(agg_val, vars_val)
-        resultados["validacao"] = _empacotar_resultado(m1_val, y1_val, agg_val, vars_val)
+        r = _empacotar_resultado(m1_val, y1_val, agg_val, vars_val)
+        r["margem_observada"] = round(_margem_pct_media(sub_val), 4)
+        resultados["validacao"] = r
 
     if not any(k in resultados for k in ("expansao", "formatacao", "validacao")):
         raise ValueError(
@@ -262,3 +275,33 @@ def rodar_regressao(caminho_excel):
     resultados["_preview"] = df[colunas_preview].head(200).to_dict("records")
 
     return resultados
+
+# def stats(df,servico):
+#     """
+#     Função de estatísticas descritivas por serviço.
+#     Retorna um DataFrame com média, mediana, desvio padrão e contagem
+#     para as variáveis numéricas relevantes, agrupado por Mês.
+#     Útil para entender a evolução temporal e a distribuição dos dados
+#     antes de rodar a regressão.
+#     """
+#     sub = df[df["Tipo_Servico"] == servico].copy()
+#     stats_df = sub.groupby("Mês").agg(
+#         Receita_Total_Média = ("Receita_Total", "mean"),
+#         Receita_Total_Mediana = ("Receita_Total", "median"),
+#         Receita_Total_Std = ("Receita_Total", "std"),
+#         Qtd_Contratos_Média = ("Qtd_Contratos", "mean"),
+#         Qtd_Contratos_Mediana = ("Qtd_Contratos", "median"),
+#         Qtd_Contratos_Std = ("Qtd_Contratos", "std"),
+#         H_Total_Média = ("H_Total", "mean"),
+#         H_Total_Mediana = ("H_Total", "median"),
+#         H_Total_Std = ("H_Total", "std"),
+#         Total_Custos_Média = ("Total_Custos", "mean"),
+#         Total_Custos_Mediana = ("Total_Custos", "median"),
+#         Total_Custos_Std = ("Total_Custos", "std"),
+#         Margem_RS_Média = ("Margem_RS", "mean"),
+#         Margem_RS_Mediana = ("Margem_RS", "median"),
+#         Margem_RS_Std = ("Margem_RS", "std"),
+#         Contagem = ("Mês", "count")
+#         margem_pct_media = ("Margem_RS", lambda x: (x / sub.loc[x.index, "Receita_Total"]).mean())
+#     ).reset_index()
+#     return stats_df

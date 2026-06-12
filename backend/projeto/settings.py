@@ -3,11 +3,12 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-v4e$yl$zr$m!3$!t^*%h0&t(7mc3^gq&2@#t*@^o6!7++%cxb!'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-v4e$yl$zr$m!3$!t^*%h0&t(7mc3^gq&2@#t*@^o6!7++%cxb!')
 
-DEBUG = True
+# DEBUG ligado por padrão (dev local); no Render setamos DEBUG=False via env var
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.trycloudflare.com', '.ngrok-free.app', '.ngrok.io']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.trycloudflare.com', '.ngrok-free.app', '.ngrok.io', '.onrender.com']
 
 INSTALLED_APPS = [
     'app',
@@ -24,6 +25,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -90,6 +92,14 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# CSRF para domínios externos (Render + tunnels de dev)
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+    'https://*.trycloudflare.com',
+    'https://*.ngrok-free.app',
+]

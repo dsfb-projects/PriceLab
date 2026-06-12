@@ -520,27 +520,27 @@ body.mgmt-mode .mgmt-only { display: block; }
   <div class="three-col">
     <div class="card" style="border-left: 3px solid var(--exp)">
       <div class="card-title">Expansão</div>
-      <div style="font-family:'DM Mono',monospace;font-size:1.6rem;color:var(--exp);margin-bottom:.4rem">48.2%</div>
-      <div style="font-size:.84rem;color:var(--text2)">Margem média observada</div>
-      <div class="data-row"><span class="data-row-label">Custo/contrato</span><span class="data-row-val">R$ 3.128</span></div>
-      <div class="data-row"><span class="data-row-label">Preço ideal (6%)</span><span class="data-row-val" style="color:var(--green)">R$ 4.469</span></div>
-      <div class="data-row tech-only"><span class="data-row-label">R² (M1)</span><span class="data-row-val">0.297</span></div>
+      <div id="vg-exp-margem" style="font-family:'DM Mono',monospace;font-size:1.6rem;color:var(--exp);margin-bottom:.4rem">48.2%</div>
+      <div style="font-size:.84rem;color:var(--text2)">Lucro médio observado</div>
+      <div class="data-row"><span class="data-row-label">Custo/contrato</span><span id="vg-exp-cpc" class="data-row-val">R$ 3.128</span></div>
+      <div class="data-row"><span class="data-row-label">Preço ideal (6%)</span><span id="vg-exp-preco" class="data-row-val" style="color:var(--green)">R$ 4.469</span></div>
+      <div class="data-row tech-only"><span class="data-row-label">R² (M1)</span><span id="vg-exp-r2" class="data-row-val">0.297</span></div>
     </div>
     <div class="card" style="border-left: 3px solid var(--fmt)">
       <div class="card-title">Formatação</div>
-      <div style="font-family:'DM Mono',monospace;font-size:1.6rem;color:var(--fmt);margin-bottom:.4rem">61.9%</div>
-      <div style="font-size:.84rem;color:var(--text2)">Margem média observada</div>
-      <div class="data-row"><span class="data-row-label">Custo/contrato</span><span class="data-row-val">R$ 18.501</span></div>
-      <div class="data-row"><span class="data-row-label">Preço ideal (6%)</span><span class="data-row-val" style="color:var(--green)">R$ 26.430</span></div>
-      <div class="data-row tech-only"><span class="data-row-label">R² (M1)</span><span class="data-row-val">0.119</span></div>
+      <div id="vg-fmt-margem" style="font-family:'DM Mono',monospace;font-size:1.6rem;color:var(--fmt);margin-bottom:.4rem">61.9%</div>
+      <div style="font-size:.84rem;color:var(--text2)">Lucro médio observado</div>
+      <div class="data-row"><span class="data-row-label">Custo/contrato</span><span id="vg-fmt-cpc" class="data-row-val">R$ 18.501</span></div>
+      <div class="data-row"><span class="data-row-label">Preço ideal (6%)</span><span id="vg-fmt-preco" class="data-row-val" style="color:var(--green)">R$ 26.430</span></div>
+      <div class="data-row tech-only"><span class="data-row-label">R² (M1)</span><span id="vg-fmt-r2" class="data-row-val">0.119</span></div>
     </div>
     <div class="card" style="border-left: 3px solid var(--val)">
       <div class="card-title">Validação</div>
-      <div style="font-family:'DM Mono',monospace;font-size:1.6rem;color:var(--red);margin-bottom:.4rem">−13.0%</div>
-      <div style="font-size:.84rem;color:var(--text2)">Margem média observada</div>
-      <div class="data-row"><span class="data-row-label">Custo/contrato</span><span class="data-row-val" style="color:var(--red)">R$ 10.564</span></div>
-      <div class="data-row"><span class="data-row-label">Preço ideal (6%)</span><span class="data-row-val" style="color:var(--yellow)">R$ 15.091</span></div>
-      <div class="data-row tech-only"><span class="data-row-label">R² (M1)</span><span class="data-row-val" style="color:var(--green)">0.948</span></div>
+      <div id="vg-val-margem" style="font-family:'DM Mono',monospace;font-size:1.6rem;color:var(--red);margin-bottom:.4rem">−13.0%</div>
+      <div style="font-size:.84rem;color:var(--text2)">Lucro médio observado</div>
+      <div class="data-row"><span class="data-row-label">Custo/contrato</span><span id="vg-val-cpc" class="data-row-val" style="color:var(--red)">R$ 10.564</span></div>
+      <div class="data-row"><span class="data-row-label">Preço ideal (6%)</span><span id="vg-val-preco" class="data-row-val" style="color:var(--yellow)">R$ 15.091</span></div>
+      <div class="data-row tech-only"><span class="data-row-label">R² (M1)</span><span id="vg-val-r2" class="data-row-val" style="color:var(--green)">0.948</span></div>
     </div>
   </div>
 
@@ -562,63 +562,58 @@ body.mgmt-mode .mgmt-only { display: block; }
 <section id="expansao" class="page">
   <div class="page-header">
     <h1 class="page-title" style="color:var(--exp)">Expansão</h1>
-    <p class="page-desc">Serviço com tiers de R$3.000 a R$10.000. Margem saudável mas altamente dependente do mix de preço.</p>
+    <p id="exp-desc" class="page-desc">Serviço com tiers de R$3.000 a R$10.000. Margem saudável mas altamente dependente do mix de preço.</p>
   </div>
-
   <div class="tabs">
     <button class="tab active" onclick="switchTab(this,'exp-m1','exp-tabs')">Análise de Custo</button>
     <button class="tab tech-only" onclick="switchTab(this,'exp-m2','exp-tabs')">Modelo 2 — Margem %</button>
     <button class="tab tech-only" onclick="switchTab(this,'exp-elast','exp-tabs')">Elasticidades</button>
   </div>
-
   <div id="exp-m1" class="tab-panel-inner">
     <div class="metric-grid">
-      <div class="metric tech-only"><div class="metric-label">R²</div><div class="metric-val yellow">0.297</div></div>
-      <div class="metric tech-only"><div class="metric-label">R² ajustado</div><div class="metric-val yellow">0.249</div></div>
-      <div class="metric tech-only"><div class="metric-label">MAE</div><div class="metric-val">R$ 993</div></div>
-      <div class="metric"><div class="metric-label">Custo/contrato</div><div class="metric-val">R$ 3.128</div></div>
+      <div class="metric tech-only"><div class="metric-label">R²</div><div id="exp-r2" class="metric-val yellow">0.297</div></div>
+      <div class="metric tech-only"><div class="metric-label">R² ajustado</div><div id="exp-r2adj" class="metric-val yellow">0.249</div></div>
+      <div class="metric tech-only"><div class="metric-label">MAE</div><div id="exp-mae" class="metric-val">R$ 993</div></div>
+      <div class="metric"><div class="metric-label">Custo/contrato</div><div id="exp-cpc" class="metric-val">R$ 3.128</div></div>
     </div>
     <div class="two-col">
       <div class="card tech-only">
         <div class="card-title">Coeficientes β</div>
-        <div class="data-row"><span class="data-row-label">β₀ — Custo fixo base</span><span><span class="data-row-val">R$ 7.092</span><span class="badge badge-yellow">p=0.018</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₁ — Qtd contratos</span><span><span class="data-row-val">+R$ 1.897/ct</span><span class="badge badge-green">p=0.009</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₂ — H_Total</span><span><span class="data-row-val">−R$ 5,25/h</span><span class="badge badge-gray">p=0.822</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₃ — Num_Mes</span><span><span class="data-row-val">−R$ 88,66</span><span class="badge badge-gray">p=0.144</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₀ — Custo fixo base</span><span><span id="exp-b0" class="data-row-val">R$ 7.092</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₁ — Qtd contratos</span><span><span id="exp-b1" class="data-row-val">+R$ 1.897/ct</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₂ — H_Total</span><span><span id="exp-b2" class="data-row-val">−R$ 5,25/h</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₃ — Num_Mes</span><span><span id="exp-b3" class="data-row-val">−R$ 88,66</span></span></div>
       </div>
       <div class="card">
         <div class="card-title">Equação do Modelo</div>
-        <div style="font-family:'DM Mono',monospace;font-size:.82rem;color:var(--text2);line-height:2;background:var(--bg3);border-radius:8px;padding:.8rem 1rem">
-          Custo = 7.092<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;+ 1.897 × Qtd_Contratos<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;− 5,25 × H_Total<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;− 88,66 × Num_Mes
+        <div id="exp-eq" style="font-family:'DM Mono',monospace;font-size:.82rem;color:var(--text2);line-height:2;background:var(--bg3);border-radius:8px;padding:.8rem 1rem">
+          Custo = 7.092<br>&nbsp;&nbsp;&nbsp;&nbsp;+ 1.897 × Qtd_Contratos<br>&nbsp;&nbsp;&nbsp;&nbsp;− 5,25 × H_Total<br>&nbsp;&nbsp;&nbsp;&nbsp;− 88,66 × Num_Mes
         </div>
-        <div style="margin-top:.8rem;font-size:.8rem;color:var(--text3)">R² moderado — mix de tier é o maior driver de margem neste serviço.</div>
+        <div id="exp-r2-note" style="margin-top:.8rem;font-size:.8rem;color:var(--text3)">R² moderado — mix de tier é o maior driver de margem neste serviço.</div>
       </div>
     </div>
   </div>
-
   <div id="exp-m2" class="tab-panel-inner tech-only" style="display:none">
     <div class="metric-grid">
-      <div class="metric"><div class="metric-label">R²</div><div class="metric-val red">0.015</div></div>
-      <div class="metric"><div class="metric-label">Margem média obs.</div><div class="metric-val green">48.2%</div></div>
-      <div class="metric"><div class="metric-label">Preço ideal (6%)</div><div class="metric-val">R$ 4.469</div></div>
+      <div class="metric"><div class="metric-label">R²</div><div id="exp-m2-r2" class="metric-val red">0.015</div></div>
+      <div class="metric"><div class="metric-label">Lucro médio obs.</div><div id="exp-m2-margem" class="metric-val green">48.2%</div></div>
+      <div class="metric"><div class="metric-label">Preço ideal (6%)</div><div id="exp-m2-preco" class="metric-val">R$ 4.469</div></div>
       <div class="metric"><div class="metric-label">Preço atual mín.</div><div class="metric-val yellow">R$ 3.000</div></div>
     </div>
     <div class="card">
       <div class="card-title">Interpretação</div>
-      <p style="font-size:.88rem;color:var(--text2);line-height:1.7">R²=0.015 indica que quantidade e horas <strong style="color:var(--text)">não explicam a variação de margem</strong>. O principal driver é o tier de preço escolhido pelo cliente (R$3k → margem negativa, R$10k → margem alta). Recomendação: criar variável dummy de tier para este modelo.</p>
+      <p style="font-size:.88rem;color:var(--text2);line-height:1.7">R² indica que quantidade e horas <strong style="color:var(--text)">não explicam a variação de margem</strong>. O principal driver é o tier de preço escolhido pelo cliente. Recomendação: criar variável dummy de tier para este modelo.</p>
     </div>
   </div>
-
   <div id="exp-elast" class="tab-panel-inner tech-only" style="display:none">
     <div class="card">
       <div class="card-title">Elasticidades — ponto na média (ε = β × X̄ / Ȳ)</div>
-      <div style="margin-bottom:1rem;font-size:.8rem;color:var(--text3)">Interpretação: ε=+0.61 significa que +1% em Qtd_Contratos → +0.61% no Custo_Total</div>
-      <div class="elast-row"><span class="elast-label">ε Qtd_Contratos</span><div class="elast-track"><div class="elast-fill fill-blue" style="width:61%">+0.606</div></div></div>
-      <div class="elast-row"><span class="elast-label">ε H_Total</span><div class="elast-track"><div class="elast-fill fill-red" style="width:8%">−0.080</div></div></div>
-      <div class="elast-row"><span class="elast-label">ε Num_Mes</span><div class="elast-track"><div class="elast-fill fill-red" style="width:4%">−0.042</div></div></div>
+      <div style="margin-bottom:1rem;font-size:.8rem;color:var(--text3)">+1% em uma variável → variação de ε% no Custo_Total</div>
+      <div id="exp-elast-container">
+        <div class="elast-row"><span class="elast-label">ε Qtd_Contratos</span><div class="elast-track"><div class="elast-fill fill-blue" style="width:61%">+0.606</div></div></div>
+        <div class="elast-row"><span class="elast-label">ε H_Total</span><div class="elast-track"><div class="elast-fill fill-red" style="width:8%">−0.080</div></div></div>
+        <div class="elast-row"><span class="elast-label">ε Num_Mes</span><div class="elast-track"><div class="elast-fill fill-red" style="width:4%">−0.042</div></div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -627,7 +622,7 @@ body.mgmt-mode .mgmt-only { display: block; }
 <section id="formatacao" class="page">
   <div class="page-header">
     <h1 class="page-title" style="color:var(--fmt)">Formatação</h1>
-    <p class="page-desc">Serviço com maior margem da empresa (61.9%). Tiers de R$34.500 a R$103.500.</p>
+    <p id="fmt-desc" class="page-desc">Serviço com maior margem da empresa. Tiers de R$34.500 a R$103.500.</p>
   </div>
   <div class="tabs">
     <button class="tab active" onclick="switchTab(this,'fmt-m1','fmt-tabs')">Análise de Custo</button>
@@ -636,46 +631,46 @@ body.mgmt-mode .mgmt-only { display: block; }
   </div>
   <div id="fmt-m1" class="tab-panel-inner">
     <div class="metric-grid">
-      <div class="metric tech-only"><div class="metric-label">R²</div><div class="metric-val yellow">0.119</div></div>
-      <div class="metric tech-only"><div class="metric-label">R² ajustado</div><div class="metric-val red">0.080</div></div>
-      <div class="metric tech-only"><div class="metric-label">MAE</div><div class="metric-val">R$ 2.174</div></div>
-      <div class="metric"><div class="metric-label">Custo/contrato</div><div class="metric-val">R$ 18.501</div></div>
+      <div class="metric tech-only"><div class="metric-label">R²</div><div id="fmt-r2" class="metric-val yellow">0.119</div></div>
+      <div class="metric tech-only"><div class="metric-label">R² ajustado</div><div id="fmt-r2adj" class="metric-val red">0.080</div></div>
+      <div class="metric tech-only"><div class="metric-label">MAE</div><div id="fmt-mae" class="metric-val">R$ 2.174</div></div>
+      <div class="metric"><div class="metric-label">Custo/contrato</div><div id="fmt-cpc" class="metric-val">R$ 18.501</div></div>
     </div>
     <div class="two-col">
       <div class="card tech-only">
         <div class="card-title">Coeficientes β</div>
-        <div class="data-row"><span class="data-row-label">β₀ — Custo fixo base</span><span><span class="data-row-val">R$ 9.307</span><span class="badge badge-green">p=0.005</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₁ — Qtd contratos</span><span><span class="data-row-val">+R$ 9.307/ct</span><span class="badge badge-green">p=0.005</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₂ — H_Total</span><span><span class="data-row-val">−R$ 22,45/h</span><span class="badge badge-gray">p=0.760</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₃ — Num_Mes</span><span><span class="data-row-val">+R$ 274,62</span><span class="badge badge-yellow">p=0.021</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₀ — Custo fixo base</span><span><span id="fmt-b0" class="data-row-val">R$ 9.307</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₁ — Qtd contratos</span><span><span id="fmt-b1" class="data-row-val">+R$ 9.307/ct</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₂ — H_Total</span><span><span id="fmt-b2" class="data-row-val">−R$ 22,45/h</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₃ — Num_Mes</span><span><span id="fmt-b3" class="data-row-val">+R$ 274,62</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₄ — H_Advogado</span><span><span id="fmt-b4" class="data-row-val">—</span></span></div>
       </div>
       <div class="card">
         <div class="card-title">Equação do Modelo</div>
-        <div style="font-family:'DM Mono',monospace;font-size:.82rem;color:var(--text2);line-height:2;background:var(--bg3);border-radius:8px;padding:.8rem 1rem">
-          Custo = 9.307<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;+ 9.307 × Qtd_Contratos<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;− 22,45 × H_Total<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;+ 274,62 × Num_Mes
+        <div id="fmt-eq" style="font-family:'DM Mono',monospace;font-size:.82rem;color:var(--text2);line-height:2;background:var(--bg3);border-radius:8px;padding:.8rem 1rem">
+          Custo = 9.307<br>&nbsp;&nbsp;&nbsp;&nbsp;+ 9.307 × Qtd_Contratos<br>&nbsp;&nbsp;&nbsp;&nbsp;− 22,45 × H_Total<br>&nbsp;&nbsp;&nbsp;&nbsp;+ 274,62 × Num_Mes
         </div>
-        <div style="margin-top:.8rem;font-size:.8rem;color:var(--text3)">β₃ positivo: custo cresce com o tempo — estrutura em expansão. R² baixo indica variáveis faltantes.</div>
+        <div id="fmt-r2-note" style="margin-top:.8rem;font-size:.8rem;color:var(--text3)">β₃ positivo: custo cresce com o tempo — estrutura em expansão. R² baixo indica variáveis faltantes.</div>
       </div>
     </div>
   </div>
   <div id="fmt-m2" class="tab-panel-inner tech-only" style="display:none">
     <div class="metric-grid">
-      <div class="metric"><div class="metric-label">R²</div><div class="metric-val yellow">0.185</div></div>
-      <div class="metric"><div class="metric-label">Margem média obs.</div><div class="metric-val green">61.9%</div></div>
-      <div class="metric"><div class="metric-label">Preço ideal (6%)</div><div class="metric-val">R$ 26.430</div></div>
+      <div class="metric"><div class="metric-label">R²</div><div id="fmt-m2-r2" class="metric-val yellow">0.185</div></div>
+      <div class="metric"><div class="metric-label">Lucro médio obs.</div><div id="fmt-m2-margem" class="metric-val green">61.9%</div></div>
+      <div class="metric"><div class="metric-label">Preço ideal (6%)</div><div id="fmt-m2-preco" class="metric-val">R$ 26.430</div></div>
       <div class="metric"><div class="metric-label">Preço mín. atual</div><div class="metric-val green">R$ 34.500</div></div>
     </div>
-    <div class="success-note">Formatação é o serviço mais saudável. O preço mínimo atual (R$34.500) já supera confortavelmente o custo por contrato (R$18.501). Controlar horas de consultoria é o principal alavancador de margem neste serviço.</div>
+    <div id="fmt-note" class="success-note">Formatação é o serviço mais saudável. O preço mínimo atual (R$34.500) já supera confortavelmente o custo por contrato (R$18.501). Controlar horas de consultoria é o principal alavancador de margem neste serviço.</div>
   </div>
   <div id="fmt-elast" class="tab-panel-inner tech-only" style="display:none">
     <div class="card">
       <div class="card-title">Elasticidades — ponto na média</div>
-      <div class="elast-row"><span class="elast-label">ε Qtd_Contratos</span><div class="elast-track"><div class="elast-fill fill-blue" style="width:50%">+0.503</div></div></div>
-      <div class="elast-row"><span class="elast-label">ε H_Total</span><div class="elast-track"><div class="elast-fill fill-red" style="width:10%">−0.103</div></div></div>
-      <div class="elast-row"><span class="elast-label">ε Num_Mes</span><div class="elast-track"><div class="elast-fill fill-green" style="width:10%">+0.097</div></div></div>
+      <div id="fmt-elast-container">
+        <div class="elast-row"><span class="elast-label">ε Qtd_Contratos</span><div class="elast-track"><div class="elast-fill fill-blue" style="width:50%">+0.503</div></div></div>
+        <div class="elast-row"><span class="elast-label">ε H_Total</span><div class="elast-track"><div class="elast-fill fill-red" style="width:10%">−0.103</div></div></div>
+        <div class="elast-row"><span class="elast-label">ε Num_Mes</span><div class="elast-track"><div class="elast-fill fill-green" style="width:10%">+0.097</div></div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -684,7 +679,7 @@ body.mgmt-mode .mgmt-only { display: block; }
 <section id="validacao" class="page">
   <div class="page-header">
     <h1 class="page-title" style="color:var(--val)">Validação</h1>
-    <p class="page-desc">Serviço com melhor R² (0.948) mas margem negativa. Precificação requer reajuste urgente.</p>
+    <p id="val-desc" class="page-desc">Serviço com melhor R² mas margem negativa. Precificação requer reajuste urgente.</p>
   </div>
   <div class="tabs">
     <button class="tab active" onclick="switchTab(this,'val-m1','val-tabs')">Análise de Custo</button>
@@ -693,45 +688,43 @@ body.mgmt-mode .mgmt-only { display: block; }
   </div>
   <div id="val-m1" class="tab-panel-inner">
     <div class="metric-grid">
-      <div class="metric tech-only"><div class="metric-label">R²</div><div class="metric-val green">0.948</div></div>
-      <div class="metric tech-only"><div class="metric-label">R² ajustado</div><div class="metric-val green">0.941</div></div>
-      <div class="metric tech-only"><div class="metric-label">MAE</div><div class="metric-val">R$ 495</div></div>
-      <div class="metric"><div class="metric-label">Custo/contrato</div><div class="metric-val red">R$ 10.564</div></div>
+      <div class="metric tech-only"><div class="metric-label">R²</div><div id="val-r2" class="metric-val green">0.948</div></div>
+      <div class="metric tech-only"><div class="metric-label">R² ajustado</div><div id="val-r2adj" class="metric-val green">0.941</div></div>
+      <div class="metric tech-only"><div class="metric-label">MAE</div><div id="val-mae" class="metric-val">R$ 495</div></div>
+      <div class="metric"><div class="metric-label">Custo/contrato</div><div id="val-cpc" class="metric-val red">R$ 10.564</div></div>
     </div>
     <div class="two-col">
       <div class="card tech-only">
         <div class="card-title">Coeficientes β</div>
-        <div class="data-row"><span class="data-row-label">β₀ — Custo fixo base</span><span><span class="data-row-val">R$ 7.261</span><span class="badge badge-green">p&lt;0.001</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₁ — Qtd contratos</span><span><span class="data-row-val">+R$ 4.597/ct</span><span class="badge badge-green">p&lt;0.001</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₂ — H_Total</span><span><span class="data-row-val">+R$ 9,42/h</span><span class="badge badge-gray">p=0.609</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₃ — Num_Mes</span><span><span class="data-row-val">+R$ 2,64</span><span class="badge badge-gray">p=0.945</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₀ — Custo fixo base</span><span><span id="val-b0" class="data-row-val">R$ 7.261</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₁ — Qtd contratos</span><span><span id="val-b1" class="data-row-val">+R$ 4.597/ct</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₂ — H_Total</span><span><span id="val-b2" class="data-row-val">+R$ 9,42/h</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₃ — Num_Mes</span><span><span id="val-b3" class="data-row-val">+R$ 2,64</span></span></div>
       </div>
       <div class="card">
         <div class="card-title">Equação do Modelo</div>
-        <div style="font-family:'DM Mono',monospace;font-size:.82rem;color:var(--text2);line-height:2;background:var(--bg3);border-radius:8px;padding:.8rem 1rem">
-          Custo = 7.261<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;+ 4.597 × Qtd_Contratos<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;+ 9,42 × H_Total<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;+ 2,64 × Num_Mes
+        <div id="val-eq" style="font-family:'DM Mono',monospace;font-size:.82rem;color:var(--text2);line-height:2;background:var(--bg3);border-radius:8px;padding:.8rem 1rem">
+          Custo = 7.261<br>&nbsp;&nbsp;&nbsp;&nbsp;+ 4.597 × Qtd_Contratos<br>&nbsp;&nbsp;&nbsp;&nbsp;+ 9,42 × H_Total<br>&nbsp;&nbsp;&nbsp;&nbsp;+ 2,64 × Num_Mes
         </div>
-        <div style="margin-top:.8rem;font-size:.8rem;color:var(--text3)">Modelo excelente (R²=0.948). β₁ domina: cada contrato adicional acrescenta ~R$4.597 de custo.</div>
+        <div id="val-r2-note" style="margin-top:.8rem;font-size:.8rem;color:var(--text3)">Modelo excelente (R²=0.948). β₁ domina: cada contrato adicional acrescenta ~R$4.597 de custo.</div>
       </div>
     </div>
   </div>
   <div id="val-m2" class="tab-panel-inner tech-only" style="display:none">
     <div class="metric-grid">
-      <div class="metric"><div class="metric-label">R²</div><div class="metric-val green">0.924</div></div>
-      <div class="metric"><div class="metric-label">Margem média obs.</div><div class="metric-val red">−13.0%</div></div>
+      <div class="metric"><div class="metric-label">R²</div><div id="val-m2-r2" class="metric-val green">0.924</div></div>
+      <div class="metric"><div class="metric-label">Lucro médio obs.</div><div id="val-m2-margem" class="metric-val red">−13.0%</div></div>
       <div class="metric"><div class="metric-label">Preço atual</div><div class="metric-val red">R$ 9.900</div></div>
-      <div class="metric"><div class="metric-label">Preço ideal (6%)</div><div class="metric-val yellow">R$ 15.091</div></div>
+      <div class="metric"><div class="metric-label">Preço ideal (6%)</div><div id="val-m2-preco" class="metric-val yellow">R$ 15.091</div></div>
     </div>
-    <div class="alert">Cada contrato de Validação fechado ao preço atual gera <strong>prejuízo médio de R$664</strong>. O preço de breakeven é R$10.564 e para atingir 30% de margem o preço deve ser <strong>R$15.091 (+52%)</strong>.</div>
+    <div id="val-alert" class="alert">Cada contrato de Validação fechado ao preço atual gera <strong>prejuízo médio de R$664</strong>. O preço de breakeven é R$10.564 e para atingir 30% de margem o preço deve ser <strong>R$15.091 (+52%)</strong>.</div>
   </div>
   <div id="val-elast" class="tab-panel-inner tech-only" style="display:none">
     <div class="card">
       <div class="card-title">Elasticidades — ponto na média</div>
-      <div class="elast-row"><span class="elast-label">ε Qtd_Contratos</span><div class="elast-track"><div class="elast-fill fill-blue" style="width:44%">+0.435</div></div></div>
-      <div class="elast-row"><span class="elast-label">ε H_Total</span><div class="elast-track"><div class="elast-fill fill-green" style="width:6%">+0.057</div></div></div>
+      <div id="val-elast-container">
+        <div class="elast-row"><span class="elast-label">ε Qtd_Contratos</span><div class="elast-track"><div class="elast-fill fill-blue" style="width:44%">+0.435</div></div></div>
+        <div class="elast-row"><span class="elast-label">ε H_Total</span><div class="elast-track"><div class="elast-fill fill-green" style="width:6%">+0.057</div></div></div>
       <div class="elast-row"><span class="elast-label">ε Num_Mes</span><div class="elast-track"><div class="elast-fill fill-gray" style="width:1%">+0.001</div></div></div>
       <div style="margin-top:.8rem;font-size:.8rem;color:var(--text3)">Custo praticamente inelástico a horas e ao tempo — β₁ (Qtd) domina completamente a estrutura de custo da Validação.</div>
     </div>
@@ -1260,6 +1253,113 @@ function renderDfPreview(rows) {
 // ══════════════════════════════════════════════════════════════
 const API_BASE = '';
 
+function atualizarVisaoGeral(resultados) {
+  const cfg = {
+    expansao:  { margem: 'vg-exp-margem', cpc: 'vg-exp-cpc', preco: 'vg-exp-preco', r2: 'vg-exp-r2', cor: 'var(--exp)' },
+    formatacao:{ margem: 'vg-fmt-margem', cpc: 'vg-fmt-cpc', preco: 'vg-fmt-preco', r2: 'vg-fmt-r2', cor: 'var(--fmt)' },
+    validacao: { margem: 'vg-val-margem', cpc: 'vg-val-cpc', preco: 'vg-val-preco', r2: 'vg-val-r2', cor: 'var(--val)' },
+  };
+  Object.entries(cfg).forEach(([sv, ids]) => {
+    const r = resultados[sv];
+    if (!r) return;
+    const margem = (r.margem_observada * 100).toFixed(1);
+    const cor = r.margem_observada < 0 ? 'var(--red)' : ids.cor;
+    const el_m = document.getElementById(ids.margem);
+    if (el_m) { el_m.textContent = margem + '%'; el_m.style.color = cor; }
+    const el_cpc = document.getElementById(ids.cpc);
+    if (el_cpc) { el_cpc.textContent = 'R$ ' + Math.round(r.custo_por_contrato).toLocaleString('pt-BR'); el_cpc.style.color = r.margem_observada < 0 ? 'var(--red)' : ''; }
+    const el_p = document.getElementById(ids.preco);
+    if (el_p) { el_p.textContent = 'R$ ' + Math.round(r.preco_ideal_6).toLocaleString('pt-BR'); }
+    const el_r2 = document.getElementById(ids.r2);
+    if (el_r2) { el_r2.textContent = r.r2 !== undefined ? r.r2 : el_r2.textContent; }
+  });
+}
+
+function _r2Cor(v) { return v >= 0.7 ? 'green' : v >= 0.3 ? 'yellow' : 'red'; }
+function _fmtBeta(v) { return (v >= 0 ? '+' : '') + v.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function _fmtRS(v)   { return 'R$ ' + Math.round(v).toLocaleString('pt-BR'); }
+
+function _renderElastContainer(containerId, elast) {
+  const el = document.getElementById(containerId);
+  if (!el || !elast) return;
+  const rows = Object.entries(elast).map(([nome, val]) => {
+    const pos = val >= 0;
+    const pct = Math.min(Math.abs(val) * 100, 100).toFixed(0);
+    const cls = pos ? 'fill-blue' : 'fill-red';
+    const sinal = pos ? '+' : '−';
+    return `<div class="elast-row"><span class="elast-label">ε ${nome}</span><div class="elast-track"><div class="elast-fill ${cls}" style="width:${pct}%">${sinal}${Math.abs(val).toFixed(3)}</div></div></div>`;
+  }).join('');
+  el.innerHTML = rows;
+}
+
+function _set(id, val, cls) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = val;
+  if (cls) { el.className = el.className.replace(/\b(green|yellow|red)\b/g,'') + ' ' + cls; }
+}
+
+function atualizarPaginasServico(resultados) {
+  const cfg = {
+    expansao:   { p: 'exp',  b4: false },
+    formatacao: { p: 'fmt',  b4: true  },
+    validacao:  { p: 'val',  b4: false },
+  };
+  Object.entries(cfg).forEach(([sv, { p, b4 }]) => {
+    const r = resultados[sv];
+    if (!r) return;
+    const margem = (r.margem_observada * 100).toFixed(1);
+    const mCor   = r.margem_observada < 0 ? 'red' : 'green';
+    const cpcCor = r.margem_observada < 0 ? 'red' : '';
+
+    // Métricas M1
+    _set(`${p}-r2`,    r.r2,                    _r2Cor(r.r2));
+    _set(`${p}-r2adj`, r.r2_ajustado,           _r2Cor(r.r2_ajustado));
+    _set(`${p}-mae`,   _fmtRS(r.mae),           '');
+    _set(`${p}-cpc`,   _fmtRS(r.custo_por_contrato), cpcCor);
+
+    // Betas
+    _set(`${p}-b0`, _fmtBeta(r.beta0));
+    _set(`${p}-b1`, _fmtBeta(r.beta1) + '/ct');
+    _set(`${p}-b2`, _fmtBeta(r.beta2) + '/h');
+    _set(`${p}-b3`, _fmtBeta(r.beta3));
+    if (b4 && r.beta4 != null) _set(`${p}-b4`, _fmtBeta(r.beta4) + '/h');
+
+    // Equação
+    const eqEl = document.getElementById(`${p}-eq`);
+    if (eqEl) {
+      const v = r.variaveis || [];
+      const betas = [r.beta0, r.beta1, r.beta2, r.beta3, r.beta4].filter(x => x != null);
+      const linhas = [`Custo = ${_fmtBeta(betas[0])}`];
+      v.forEach((nm, i) => {
+        const b = betas[i+1];
+        if (b != null) linhas.push(`&nbsp;&nbsp;&nbsp;&nbsp;${b >= 0 ? '+' : ''}${_fmtBeta(b)} × ${nm}`);
+      });
+      eqEl.innerHTML = linhas.join('<br>');
+    }
+    const noteEl = document.getElementById(`${p}-r2-note`);
+    if (noteEl) noteEl.textContent = `R² = ${r.r2} — ajuste do modelo de custo.`;
+
+    // M2
+    _set(`${p}-m2-r2`,     r.r2,            _r2Cor(r.r2));
+    _set(`${p}-m2-margem`, margem + '%',     mCor);
+    _set(`${p}-m2-preco`,  _fmtRS(r.preco_ideal_6), '');
+
+    // Elasticidades
+    _renderElastContainer(`${p}-elast-container`, r.elasticidades);
+
+    // Alert dinâmico de Validação
+    if (sv === 'validacao') {
+      const alertEl = document.getElementById('val-alert');
+      if (alertEl) {
+        const breakeven = Math.round(r.custo_por_contrato).toLocaleString('pt-BR');
+        const ideal     = Math.round(r.preco_ideal_6).toLocaleString('pt-BR');
+        alertEl.innerHTML = `Custo por contrato calculado: <strong>R$${breakeven}</strong>. Preço ideal para 6% de margem: <strong>R$${ideal}</strong>.`;
+      }
+    }
+  });
+}
+
 function atualizarModelos(resultados) {
   const MAP = { expansao: 'expansao', formatacao: 'formatacao', validacao: 'validacao' };
   Object.entries(MAP).forEach(([chave, sv]) => {
@@ -1289,9 +1389,9 @@ function mostrarResultadoUpload(resultados) {
     return `
       <div class="card" style="border-left:3px solid ${cor}">
         <div class="card-title" style="color:${cor}">${nome}</div>
-        <div class="data-row tech-only"><span class="data-row-label">R²</span><span class="data-row-val" style="color:${r2_cor}">${r.r2}</span></div>
-        <div class="data-row tech-only"><span class="data-row-label">MAE</span><span class="data-row-val">R$ ${Math.round(r.mae).toLocaleString('pt-BR')}</span></div>
-        <div class="data-row"><span class="data-row-label">Margem obs.</span><span class="data-row-val">${margem_pct}%</span></div>
+        <div class="data-row tech-only"><span class="data-row-label">R²</span><span class="data-row-val" style="color:${r2_cor}">&nbsp;${r.r2}</span></div>
+        <div class="data-row tech-only"><span class="data-row-label">MAE</span><span class="data-row-val">&nbsp;R$ ${Math.round(r.mae).toLocaleString('pt-BR')}</span></div>
+        <div class="data-row"><span class="data-row-label">Lucro médio observado</span><span class="data-row-val">${margem_pct}%</span></div>
         <div class="data-row"><span class="data-row-label">Custo/contrato</span><span class="data-row-val">R$ ${Math.round(r.custo_por_contrato).toLocaleString('pt-BR')}</span></div>
         <div class="data-row"><span class="data-row-label">Preço ideal (6%)</span><span class="data-row-val" style="color:var(--green)">R$ ${Math.round(r.preco_ideal_6).toLocaleString('pt-BR')}</span></div>
       </div>`;
@@ -1315,6 +1415,8 @@ async function uploadBase(event) {
     if (!res.ok) throw new Error(data.erro || `HTTP ${res.status}`);
 
     atualizarModelos(data.resultados);
+    atualizarVisaoGeral(data.resultados);
+    atualizarPaginasServico(data.resultados);
     mostrarResultadoUpload(data.resultados);
     if (data.df_preview) renderDfPreview(data.df_preview);
 
@@ -1350,6 +1452,8 @@ async function carregarDaApi() {
     if (!res.ok) throw new Error(data.erro || `HTTP ${res.status}`);
 
     atualizarModelos(data.resultados);
+    atualizarVisaoGeral(data.resultados);
+    atualizarPaginasServico(data.resultados);
     mostrarResultadoUpload(data.resultados);
     if (data.df_preview) renderDfPreview(data.df_preview);
 
