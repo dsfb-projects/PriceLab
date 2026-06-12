@@ -1,7 +1,7 @@
 services:
   # ── Produção — deploya a cada push na main ──────────────────────
   - type: web
-    name: pricelab
+    name: pricelab-expandir-franquias
     runtime: python
     plan: free
     branch: main
