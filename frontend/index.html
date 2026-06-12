@@ -442,21 +442,119 @@ body.mgmt-mode .mgmt-only { display: block; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
 
+/* ── Login ─────────────────────────────────────────────────────────────────── */
+.login-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+}
+.login-card {
+  width: 100%; max-width: 380px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2.5rem 2rem;
+  box-shadow: var(--shadow);
+}
+.login-logo { text-align: center; margin-bottom: 2rem; }
+.login-logo .logo-mark { font-size: 2rem; }
+.login-logo .logo-sub { display: block; margin-top: 4px; }
+.login-field { margin-bottom: 1rem; }
+.login-field label {
+  display: block; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text3); font-weight: 500; margin-bottom: .4rem;
+}
+.login-field input {
+  width: 100%; padding: .7rem .9rem;
+  background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm);
+  color: var(--text); font-family: 'Sora', sans-serif; font-size: .92rem;
+  outline: none; transition: border-color .15s;
+}
+.login-field input:focus { border-color: var(--acc); }
+.login-btn {
+  width: 100%; padding: .75rem; margin-top: .5rem;
+  background: var(--acc); border: none; border-radius: var(--radius-sm);
+  color: #fff; font-family: 'Sora', sans-serif; font-size: .92rem; font-weight: 600;
+  cursor: pointer; transition: background .15s;
+}
+.login-btn:hover { background: var(--acc2); }
+.login-btn:disabled { opacity: .6; cursor: wait; }
+.login-erro { margin-top: .8rem; font-size: .82rem; color: var(--red); text-align: center; min-height: 1.2em; }
+
+/* ── Mobile menu ───────────────────────────────────────────────────────────── */
+.menu-btn {
+  display: none;
+  position: fixed; top: 12px; left: 12px; z-index: 210;
+  width: 42px; height: 42px;
+  background: var(--bg2); border: 1px solid var(--border2); border-radius: var(--radius-sm);
+  color: var(--text); font-size: 1.2rem; cursor: pointer;
+  align-items: center; justify-content: center;
+}
+.sidebar-backdrop {
+  display: none;
+  position: fixed; inset: 0; z-index: 190;
+  background: rgba(0,0,0,.55);
+}
+
 /* ── Responsive ─────────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .shell { grid-template-columns: 1fr; }
-  .sidebar { position: static; height: auto; flex-direction: row; flex-wrap: wrap; padding: 1rem; }
-  main { padding: 1.5rem; }
+  .menu-btn { display: flex; }
+  .sidebar {
+    position: fixed; top: 0; left: 0; z-index: 200;
+    width: 270px; height: 100vh; height: 100dvh;
+    padding-top: 4rem;
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+    box-shadow: var(--shadow);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-backdrop.show { display: block; }
+  main { padding: 4.2rem 1rem 3rem; }
+  .page-title { font-size: 1.6rem; }
   .metric-grid { grid-template-columns: repeat(2,1fr); }
   .two-col, .three-col, .form-grid { grid-template-columns: 1fr; }
+  .tabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+  .tab { white-space: nowrap; }
+  .df-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .toast { left: 1rem; right: 1rem; bottom: 1rem; }
+}
+@media (max-width: 480px) {
+  .metric-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  main { padding: 4.2rem .75rem 2.5rem; }
+  html { font-size: 14px; }
 }
 </style>
 </head>
 <body>
 
+<!-- ══════════════════════════════════════════════════════ LOGIN -->
+<div class="login-overlay" id="login-overlay" style="display:none">
+  <form class="login-card" onsubmit="fazerLogin(event)">
+    <div class="login-logo logo">
+      <span class="logo-mark">Price<span style="color:var(--acc)">Lab</span></span>
+      <span class="logo-sub">Laboratório de Precificação</span>
+    </div>
+    <div class="login-field">
+      <label for="login-usuario">Usuário</label>
+      <input id="login-usuario" type="text" autocomplete="username" required>
+    </div>
+    <div class="login-field">
+      <label for="login-senha">Senha</label>
+      <input id="login-senha" type="password" autocomplete="current-password" required>
+    </div>
+    <button class="login-btn" id="login-btn" type="submit">Entrar</button>
+    <div class="login-erro" id="login-erro"></div>
+  </form>
+</div>
+
+<button class="menu-btn" id="menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+<div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebar(false)"></div>
+
 <div class="shell">
 <!-- ══════════════════════════════════════════════════════ SIDEBAR -->
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
   <div class="logo">
     <span class="logo-mark">Price<span style="color:var(--acc)">Lab</span></span>
     <span class="logo-sub">Laboratório de Precificação</span>
@@ -909,7 +1007,54 @@ function goTo(id, btn) {
   if (id === 'elasticidade') setTimeout(renderElast, 80);
   if (id === 'configuracao') renderConfigs();
   if (id === 'calculadora') calcPreco();
+  toggleSidebar(false); // fecha o menu no mobile ao navegar
 }
+
+/* ── Menu mobile ─────────────────────────────────────────────── */
+function toggleSidebar(force) {
+  const sb = document.getElementById('sidebar');
+  const bd = document.getElementById('sidebar-backdrop');
+  const abrir = force !== undefined ? force : !sb.classList.contains('open');
+  sb.classList.toggle('open', abrir);
+  bd.classList.toggle('show', abrir);
+}
+
+/* ── Login ───────────────────────────────────────────────────── */
+const AUTH_KEY = 'pricelab_auth';
+
+function checarLogin() {
+  if (sessionStorage.getItem(AUTH_KEY) !== '1') {
+    document.getElementById('login-overlay').style.display = 'flex';
+  }
+}
+
+async function fazerLogin(event) {
+  event.preventDefault();
+  const btn = document.getElementById('login-btn');
+  const erroEl = document.getElementById('login-erro');
+  btn.disabled = true;
+  erroEl.textContent = '';
+  try {
+    const res = await fetch(`${API_BASE}/api/login/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        usuario: document.getElementById('login-usuario').value,
+        senha: document.getElementById('login-senha').value,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.erro || 'Falha no login.');
+    sessionStorage.setItem(AUTH_KEY, '1');
+    document.getElementById('login-overlay').style.display = 'none';
+  } catch (e) {
+    erroEl.textContent = e.message;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+checarLogin();
 
 function switchTab(btn, targetId, groupClass) {
   const parent = btn.closest('.page') || document;

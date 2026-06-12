@@ -1,4 +1,5 @@
 import json
+import os
 import pandas as pd
 
 from rest_framework.decorators import api_view, parser_classes
@@ -10,6 +11,22 @@ from .models import UploadedBase, ResultadoRegressao
 from .regression import rodar_regressao, carregar_df
 
 _SERVICOS = ('expansao', 'formatacao', 'validacao')
+
+
+@api_view(['POST'])
+def login_view(request):
+    """
+    Login simples com credencial única, validada contra variáveis de ambiente.
+    Sobrevive a deploys no Render (não depende do SQLite).
+    Defaults para dev local: pricelab / fae2026
+    """
+    usuario = str(request.data.get('usuario', '')).strip()
+    senha = str(request.data.get('senha', ''))
+    esperado_usuario = os.environ.get('APP_USUARIO', 'pricelab')
+    esperada_senha = os.environ.get('APP_SENHA', 'fae2026')
+    if usuario == esperado_usuario and senha == esperada_senha:
+        return Response({'ok': True})
+    return Response({'erro': 'Usuário ou senha inválidos.'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['POST'])
