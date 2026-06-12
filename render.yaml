@@ -1,8 +1,26 @@
 services:
+  # ── Produção — deploya a cada push na main ──────────────────────
   - type: web
     name: pricelab
     runtime: python
     plan: free
+    branch: main
+    buildCommand: "./build.sh"
+    startCommand: "cd backend && gunicorn projeto.wsgi:application"
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: "3.12.0"
+
+  # ── Staging — deploya a cada push na dev ────────────────────────
+  - type: web
+    name: pricelab-staging
+    runtime: python
+    plan: free
+    branch: dev
     buildCommand: "./build.sh"
     startCommand: "cd backend && gunicorn projeto.wsgi:application"
     envVars:
