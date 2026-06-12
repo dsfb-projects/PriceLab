@@ -33,6 +33,30 @@
   --shadow:    0 4px 32px rgba(0,0,0,.45);
 }
 
+/* ── Tema claro ── */
+body.light {
+  --bg:        #f3f5f9;
+  --bg2:       #ffffff;
+  --bg3:       #e9edf4;
+  --border:    #dce2ec;
+  --border2:   #c8d1e0;
+  --text:      #1c2434;
+  --text2:     #5b6478;
+  --text3:     #9099ad;
+  --acc:       #3674d9;
+  --acc2:      #2861c2;
+  --green:     #14935f;
+  --red:       #d54848;
+  --yellow:    #b07f0e;
+  --purple:    #7a55e8;
+  --exp:       #3674d9;
+  --fmt:       #14935f;
+  --val:       #b07f0e;
+  --shadow:    0 4px 24px rgba(30,40,70,.10);
+}
+body.light .tab.active { box-shadow: 0 1px 4px rgba(30,40,70,.12); }
+body.light .success-note { color: #fff; }
+
 html { font-size: 15px; scroll-behavior: smooth; }
 body {
   background: var(--bg);
@@ -597,6 +621,10 @@ body.mgmt-mode .mgmt-only { display: block; }
       <span style="width:8px;height:8px;border-radius:50%;background:var(--purple);flex-shrink:0"></span>
       <span id="mode-toggle-label">Ativar modo técnico</span>
     </button>
+    <button class="mode-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()">
+      <span style="width:8px;height:8px;border-radius:50%;background:var(--yellow);flex-shrink:0"></span>
+      <span id="theme-toggle-label">Modo claro</span>
+    </button>
     <div style="font-size:.72rem;color:var(--text3);line-height:1.6" id="sidebar-status">
       Usando coeficientes padrão<br>
       Faça upload da base real em<br><em>Upload de Base</em>
@@ -1019,6 +1047,24 @@ function toggleSidebar(force) {
   bd.classList.toggle('show', abrir);
 }
 
+/* ── Tema claro/escuro ───────────────────────────────────────── */
+const THEME_KEY = 'pricelab_theme';
+
+function aplicarTema(claro) {
+  document.body.classList.toggle('light', claro);
+  const lbl = document.getElementById('theme-toggle-label');
+  if (lbl) lbl.textContent = claro ? 'Modo escuro' : 'Modo claro';
+  if (typeof elChart !== 'undefined' && elChart) renderElast(); // re-renderiza o gráfico com as cores do tema
+}
+
+function toggleTheme() {
+  const claro = !document.body.classList.contains('light');
+  localStorage.setItem(THEME_KEY, claro ? 'light' : 'dark');
+  aplicarTema(claro);
+}
+
+aplicarTema(localStorage.getItem(THEME_KEY) === 'light');
+
 /* ── Login ───────────────────────────────────────────────────── */
 const AUTH_KEY = 'pricelab_auth';
 
@@ -1157,8 +1203,9 @@ function renderElast() {
 
   const ctx = document.getElementById('elast-chart').getContext('2d');
   if (elChart) elChart.destroy();
-  Chart.defaults.color = '#8b91a8';
-  Chart.defaults.borderColor = '#252a37';
+  const cssVar = n => getComputedStyle(document.body).getPropertyValue(n).trim();
+  Chart.defaults.color = cssVar('--text2');
+  Chart.defaults.borderColor = cssVar('--border');
   elChart = new Chart(ctx, {
     type: 'line',
     data: { labels, datasets },
@@ -1168,11 +1215,11 @@ function renderElast() {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#1a1e28',
-          borderColor: '#2e3446',
+          backgroundColor: cssVar('--bg3'),
+          borderColor: cssVar('--border2'),
           borderWidth: 1,
-          titleColor: '#e8eaf0',
-          bodyColor: '#8b91a8',
+          titleColor: cssVar('--text'),
+          bodyColor: cssVar('--text2'),
           callbacks: {
             label: ctx => ` ${ctx.dataset.label}: R$ ${ctx.parsed.y.toLocaleString('pt-BR')}`
           }
@@ -1180,12 +1227,12 @@ function renderElast() {
       },
       scales: {
         x: {
-          grid: { color: '#1a1e28' },
-          title: { display:true, text:xLabel, color:'#555c73' }
+          grid: { color: cssVar('--bg3') },
+          title: { display:true, text:xLabel, color: cssVar('--text3') }
         },
         y: {
-          grid: { color: '#1a1e28' },
-          title: { display:true, text:'Custo total (R$)', color:'#555c73' },
+          grid: { color: cssVar('--bg3') },
+          title: { display:true, text:'Custo total (R$)', color: cssVar('--text3') },
           ticks: { callback: v => 'R$' + Math.round(v/1000) + 'k' }
         }
       }
