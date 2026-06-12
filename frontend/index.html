@@ -1021,6 +1021,7 @@ body.mgmt-mode .mgmt-only { display: block; }
         <input type="file" accept=".xlsx,.xls" style="display:none" onchange="uploadBase(event)">
       </label>
       <button class="btn btn-ghost" onclick="carregarDaApi()">Carregar última análise do servidor</button>
+      <a class="btn btn-ghost" href="/static/Template_PriceLab.xlsx" download style="text-decoration:none">⬇ Baixar template (.xlsx)</a>
     </div>
     <div id="upload-status" style="margin-top:1rem;font-size:.88rem;color:var(--text3)"></div>
   </div>
@@ -1671,9 +1672,10 @@ function renderPremissas(secoes) {
   if (!secoes || !secoes.length) { label.style.display = 'none'; box.style.display = 'none'; return; }
   const total = secoes.reduce((n, s) => n + s.itens.length, 0);
   document.getElementById('premissas-count').textContent = `${total} parâmetros`;
+  const semVersao = t => t.replace(/\s*[—–-]*\s*v\d+\s*$/i, '').trim();
   box.innerHTML = secoes.map(s => `
     <div class="card">
-      <div class="card-title">${s.titulo}</div>
+      <div class="card-title">${semVersao(s.titulo)}</div>
       ${s.itens.map(i => `<div class="data-row"><span class="data-row-label">${i.parametro}</span><span class="data-row-val">${i.valor}</span></div>`).join('')}
     </div>`).join('');
   label.style.display = '';

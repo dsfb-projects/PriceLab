@@ -206,10 +206,16 @@ def carregar_premissas(caminho_excel):
     except Exception:
         return []
 
+    import re
+
     def _fmt(v):
         if isinstance(v, float) and v == int(v):
             return str(int(v))
         return str(v).strip()
+
+    def _sem_versao(s):
+        """Remove sufixo de versão ('— v4', 'v4') dos títulos para exibição."""
+        return re.sub(r"\s*[—–-]*\s*v\d+\s*$", "", s, flags=re.I).strip()
 
     secoes = []
     atual = None
@@ -221,7 +227,7 @@ def carregar_premissas(caminho_excel):
         if a_vazio and b_vazio:
             continue
         if not a_vazio and b_vazio:
-            atual = {"titulo": _fmt(a), "itens": []}
+            atual = {"titulo": _sem_versao(_fmt(a)), "itens": []}
             secoes.append(atual)
             continue
         # pula a linha de cabeçalho "Parâmetro / Valor"
