@@ -189,6 +189,52 @@ def carregar_df(caminho_excel):
     return df, aba_usada
 
 
+def carregar_premissas(caminho_excel):
+    """
+    Lê a aba de premissas de negócio (2_Premissas_v4 ou similar), se existir.
+    Layout esperado: coluna A = parâmetro, coluna B = valor; linhas com
+    coluna B vazia são títulos de seção. Retorna lista de seções:
+        [{"titulo": str, "itens": [{"parametro": str, "valor": str}, ...]}, ...]
+    Retorna [] se a aba não existir ou não puder ser lida (não bloqueia o upload).
+    """
+    try:
+        abas = pd.ExcelFile(caminho_excel).sheet_names
+        aba = next((a for a in abas if 'premissa' in a.lower()), None)
+        if aba is None:
+            return []
+        raw = pd.read_excel(caminho_excel, sheet_name=aba, header=None)
+    except Exception:
+        return []
+
+    def _fmt(v):
+        if isinstance(v, float) and v == int(v):
+            return str(int(v))
+        return str(v).strip()
+
+    secoes = []
+    atual = None
+    for _, row in raw.iterrows():
+        a = row.iloc[0] if len(row) > 0 else None
+        b = row.iloc[1] if len(row) > 1 else None
+        a_vazio = pd.isna(a)
+        b_vazio = pd.isna(b)
+        if a_vazio and b_vazio:
+            continue
+        if not a_vazio and b_vazio:
+            atual = {"titulo": _fmt(a), "itens": []}
+            secoes.append(atual)
+            continue
+        # pula a linha de cabeçalho "Parâmetro / Valor"
+        if str(a).strip().lower() == 'parâmetro':
+            continue
+        if atual is None:
+            atual = {"titulo": "Premissas", "itens": []}
+            secoes.append(atual)
+        atual["itens"].append({"parametro": _fmt(a), "valor": _fmt(b)})
+
+    return [s for s in secoes if s["itens"]]
+
+
 def _empacotar_resultado(m1, m2, y1, y2, agg, variaveis):
     """
     Converte os objetos statsmodels para dict serializável pela API.

@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import UploadedBase, ResultadoRegressao
-from .regression import rodar_regressao, carregar_df
+from .regression import rodar_regressao, carregar_df, carregar_premissas
 
 _SERVICOS = ('expansao', 'formatacao', 'validacao')
 
@@ -48,6 +48,10 @@ def upload_base(request):
         base.delete()
         return Response({'erro': f'Erro ao processar a base: {str(e)}'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
+    # Premissas de negócio (aba 2_Premissas_v4) — opcional, não bloqueia o upload
+    base.premissas = carregar_premissas(base.arquivo.path)
+    base.save(update_fields=['premissas'])
+
     # Salva coeficientes por serviço no banco (ignora chaves internas _preview/_meta)
     _EXTRAS = ('pvalues', 'f_stat', 'f_pvalue', 'rmse', 'r2_m2', 'mae_m2_pp',
                'variaveis', 'n_observacoes', 'preco_ideal_10', 'preco_ideal_15')
@@ -73,6 +77,7 @@ def upload_base(request):
         'base_id': base.pk,
         'resultados': resultados,
         'df_preview': todos.get('_preview', []),
+        'premissas': base.premissas,
     }, status=status.HTTP_201_CREATED)
 
 
@@ -111,4 +116,5 @@ def resultados_latest(request):
         'enviado_em': base.enviado_em,
         'resultados': resultados,
         'df_preview': df_preview,
+        'premissas': base.premissas,
     })

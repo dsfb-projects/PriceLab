@@ -5,6 +5,9 @@ class UploadedBase(models.Model):
     arquivo = models.FileField(upload_to='bases/')
     enviado_em = models.DateTimeField(auto_now_add=True)
 
+    # Premissas de negócio lidas da aba 2_Premissas_v4 (se existir no Excel)
+    premissas = models.JSONField(default=list, blank=True)
+
     class Meta:
         ordering = ['-enviado_em']
 

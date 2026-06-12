@@ -674,6 +674,9 @@ body.mgmt-mode .mgmt-only { display: block; }
     <strong>Diagnóstico — Validação:</strong> margem média negativa. O custo por contrato supera a receita média — o preço precisa ser reavaliado para atingir a margem alvo de 6%.
   </div>
 
+  <p class="sec-label" id="premissas-label" style="display:none">Premissas da base</p>
+  <div class="two-col" id="premissas-section" style="display:none"></div>
+
   <p class="sec-label" id="preview-label" style="display:none">Dados da base carregada</p>
   <div id="df-preview-home" style="display:none">
     <div class="df-table-wrap"><table class="df-table" id="df-home-table"></table></div>
@@ -1620,6 +1623,20 @@ function atualizarModelos(resultados) {
   if (document.getElementById('configuracao').classList.contains('active')) renderConfigs();
 }
 
+function renderPremissas(secoes) {
+  const label = document.getElementById('premissas-label');
+  const box = document.getElementById('premissas-section');
+  if (!label || !box) return;
+  if (!secoes || !secoes.length) { label.style.display = 'none'; box.style.display = 'none'; return; }
+  label.style.display = '';
+  box.style.display = '';
+  box.innerHTML = secoes.map(s => `
+    <div class="card">
+      <div class="card-title">${s.titulo}</div>
+      ${s.itens.map(i => `<div class="data-row"><span class="data-row-label">${i.parametro}</span><span class="data-row-val">${i.valor}</span></div>`).join('')}
+    </div>`).join('');
+}
+
 function mostrarResultadoUpload(resultados) {
   const box = document.getElementById('upload-resultado');
   const cards = document.getElementById('upload-cards');
@@ -1662,6 +1679,7 @@ async function uploadBase(event) {
     atualizarPaginasServico(data.resultados);
     mostrarResultadoUpload(data.resultados);
     if (data.df_preview) renderDfPreview(data.df_preview);
+    renderPremissas(data.premissas);
 
     statusEl.style.color = 'var(--green)';
     statusEl.textContent = `✓ Base processada com sucesso — ${file.name}`;
@@ -1699,6 +1717,7 @@ async function carregarDaApi() {
     atualizarPaginasServico(data.resultados);
     mostrarResultadoUpload(data.resultados);
     if (data.df_preview) renderDfPreview(data.df_preview);
+    renderPremissas(data.premissas);
 
     const dt = new Date(data.enviado_em).toLocaleString('pt-BR');
     statusEl.style.color = 'var(--green)';
