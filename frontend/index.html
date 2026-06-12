@@ -639,7 +639,7 @@ body.mgmt-mode .mgmt-only { display: block; }
 <section id="visao-geral" class="page active">
   <div class="page-header">
     <h1 class="page-title">Visão Geral</h1>
-    <p class="page-desc">Diagnóstico consolidado dos três serviços — base dummy v2 com premissas corrigidas.</p>
+    <p class="page-desc" id="vg-desc">Diagnóstico consolidado dos três serviços de consultoria.</p>
   </div>
 
   <p class="sec-label">Resumo de rentabilidade</p>
@@ -670,8 +670,8 @@ body.mgmt-mode .mgmt-only { display: block; }
     </div>
   </div>
 
-  <div class="alert" style="margin-top:1.5rem">
-    <strong>Diagnóstico crítico — Validação:</strong> preço atual R$9.900 está R$664 abaixo do custo por contrato. Reajuste mínimo necessário: <strong>+52%</strong> para atingir margem de 30%.
+  <div class="alert" style="margin-top:1.5rem" id="vg-alert">
+    <strong>Diagnóstico — Validação:</strong> margem média negativa. O custo por contrato supera a receita média — o preço precisa ser reavaliado para atingir a margem alvo de 6%.
   </div>
 
   <p class="sec-label" id="preview-label" style="display:none">Dados da base carregada</p>
@@ -705,10 +705,10 @@ body.mgmt-mode .mgmt-only { display: block; }
     <div class="two-col">
       <div class="card tech-only">
         <div class="card-title">Coeficientes β</div>
-        <div class="data-row"><span class="data-row-label">β₀ — Custo fixo base</span><span><span id="exp-b0" class="data-row-val">R$ 7.092</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₁ — Qtd contratos</span><span><span id="exp-b1" class="data-row-val">+R$ 1.897/ct</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₂ — H_Total</span><span><span id="exp-b2" class="data-row-val">−R$ 5,25/h</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₃ — Num_Mes</span><span><span id="exp-b3" class="data-row-val">−R$ 88,66</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₀ — Custo fixo base</span><span><span id="exp-b0" class="data-row-val">R$ 9.616</span> <span id="exp-b0-badge" class="badge badge-gray" style="display:none"></span></span></div>
+        <div class="data-row"><span class="data-row-label">β₁ — Qtd contratos</span><span><span id="exp-b1" class="data-row-val">+R$ 633/ct</span> <span id="exp-b1-badge" class="badge badge-gray" style="display:none"></span></span></div>
+        <div class="data-row"><span class="data-row-label">β₂ — H_Total</span><span><span id="exp-b2" class="data-row-val">−R$ 6,47/h</span> <span id="exp-b2-badge" class="badge badge-gray" style="display:none"></span></span></div>
+        <div class="data-row"><span class="data-row-label">β₃ — Num_Mes</span><span><span id="exp-b3" class="data-row-val">+R$ 71,03</span> <span id="exp-b3-badge" class="badge badge-gray" style="display:none"></span></span></div>
       </div>
       <div class="card">
         <div class="card-title">Equação do Modelo</div>
@@ -765,11 +765,11 @@ body.mgmt-mode .mgmt-only { display: block; }
     <div class="two-col">
       <div class="card tech-only">
         <div class="card-title">Coeficientes β</div>
-        <div class="data-row"><span class="data-row-label">β₀ — Custo fixo base</span><span><span id="fmt-b0" class="data-row-val">R$ 9.307</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₁ — Qtd contratos</span><span><span id="fmt-b1" class="data-row-val">+R$ 9.307/ct</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₂ — H_Total</span><span><span id="fmt-b2" class="data-row-val">−R$ 22,45/h</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₃ — Num_Mes</span><span><span id="fmt-b3" class="data-row-val">+R$ 274,62</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₄ — H_Advogado</span><span><span id="fmt-b4" class="data-row-val">—</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₀ — Custo fixo base</span><span><span id="fmt-b0" class="data-row-val">R$ 7.400</span> <span id="fmt-b0-badge" class="badge badge-gray" style="display:none"></span></span></div>
+        <div class="data-row"><span class="data-row-label">β₁ — Qtd contratos</span><span><span id="fmt-b1" class="data-row-val">+R$ 7.400/ct</span> <span id="fmt-b1-badge" class="badge badge-gray" style="display:none"></span></span></div>
+        <div class="data-row"><span class="data-row-label">β₂ — H_Total</span><span><span id="fmt-b2" class="data-row-val">+R$ 38,77/h</span> <span id="fmt-b2-badge" class="badge badge-gray" style="display:none"></span></span></div>
+        <div class="data-row"><span class="data-row-label">β₃ — H_Advogado</span><span><span id="fmt-b3" class="data-row-val">+R$ 686,24/h</span> <span id="fmt-b3-badge" class="badge badge-gray" style="display:none"></span></span></div>
+        <div class="data-row"><span class="data-row-label">β₄ — Num_Mes</span><span><span id="fmt-b4" class="data-row-val">+R$ 53,12</span> <span id="fmt-b4-badge" class="badge badge-gray" style="display:none"></span></span></div>
       </div>
       <div class="card">
         <div class="card-title">Equação do Modelo</div>
@@ -822,10 +822,10 @@ body.mgmt-mode .mgmt-only { display: block; }
     <div class="two-col">
       <div class="card tech-only">
         <div class="card-title">Coeficientes β</div>
-        <div class="data-row"><span class="data-row-label">β₀ — Custo fixo base</span><span><span id="val-b0" class="data-row-val">R$ 7.261</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₁ — Qtd contratos</span><span><span id="val-b1" class="data-row-val">+R$ 4.597/ct</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₂ — H_Total</span><span><span id="val-b2" class="data-row-val">+R$ 9,42/h</span></span></div>
-        <div class="data-row"><span class="data-row-label">β₃ — Num_Mes</span><span><span id="val-b3" class="data-row-val">+R$ 2,64</span></span></div>
+        <div class="data-row"><span class="data-row-label">β₀ — Custo fixo base</span><span><span id="val-b0" class="data-row-val">R$ 14.661</span> <span id="val-b0-badge" class="badge badge-gray" style="display:none"></span></span></div>
+        <div class="data-row"><span class="data-row-label">β₁ — Qtd contratos</span><span><span id="val-b1" class="data-row-val">+R$ 343/ct</span> <span id="val-b1-badge" class="badge badge-gray" style="display:none"></span></span></div>
+        <div class="data-row"><span class="data-row-label">β₂ — H_Total</span><span><span id="val-b2" class="data-row-val">+R$ 12,79/h</span> <span id="val-b2-badge" class="badge badge-gray" style="display:none"></span></span></div>
+        <div class="data-row"><span class="data-row-label">β₃ — Num_Mes</span><span><span id="val-b3" class="data-row-val">+R$ 12,00</span> <span id="val-b3-badge" class="badge badge-gray" style="display:none"></span></span></div>
       </div>
       <div class="card">
         <div class="card-title">Equação do Modelo</div>
@@ -884,13 +884,17 @@ body.mgmt-mode .mgmt-only { display: block; }
           <div class="slider-header"><span class="slider-name">Horas totais</span><span class="slider-val" id="out-h">200h</span></div>
           <input type="range" id="sl-h" min="50" max="700" step="10" value="200" oninput="calcPreco()">
         </div>
+        <div class="slider-block" id="sl-hadv-block" style="display:none">
+          <div class="slider-header"><span class="slider-name">Horas de advogado</span><span class="slider-val" id="out-hadv">12h</span></div>
+          <input type="range" id="sl-hadv" min="0" max="120" step="2" value="12" oninput="calcPreco()">
+        </div>
         <div class="slider-block">
           <div class="slider-header"><span class="slider-name">Mês do ano (1–12)</span><span class="slider-val" id="out-mes">6</span></div>
           <input type="range" id="sl-mes" min="1" max="12" step="1" value="6" oninput="calcPreco()">
         </div>
         <div class="slider-block">
-          <div class="slider-header"><span class="slider-name">Margem alvo</span><span class="slider-val" id="out-mg">30%</span></div>
-          <input type="range" id="sl-mg" min="5" max="70" step="5" value="30" oninput="calcPreco()">
+          <div class="slider-header"><span class="slider-name">Margem alvo</span><span class="slider-val" id="out-mg">6%</span></div>
+          <input type="range" id="sl-mg" min="1" max="40" step="1" value="6" oninput="calcPreco()">
         </div>
       </div>
     </div>
@@ -900,7 +904,7 @@ body.mgmt-mode .mgmt-only { display: block; }
       <div class="result-box" id="price-result"></div>
       <div style="margin-top:1rem;font-size:.8rem;color:var(--text3);line-height:1.7">
         <strong style="color:var(--text2)">Fórmula aplicada:</strong><br>
-        Custo = β₀ + β₁×Qtd + β₂×H + β₃×Mês<br>
+        <span id="formula-texto">Custo = β₀ + β₁×Qtd + β₂×H + β₃×Mês</span><br>
         Preço ideal = Custo/contrato ÷ (1 − Margem%)
       </div>
     </div>
@@ -1014,9 +1018,9 @@ body.mgmt-mode .mgmt-only { display: block; }
 // ESTADO GLOBAL
 // ══════════════════════════════════════════════════════════════
 const DEFAULT = {
-  expansao:   { nome:"Expansão",   cor:"#4f8ef7", b0:7092,  b1:1897,  b2:-5.25,   b3:-88.66,  r2:0.297, mae:993   },
-  formatacao: { nome:"Formatação", cor:"#3ecf8e", b0:9307,  b1:9307,  b2:-22.45,  b3:274.62,  r2:0.119, mae:2174  },
-  validacao:  { nome:"Validação",  cor:"#f0c96a", b0:7261,  b1:4597,  b2:9.42,    b3:2.64,    r2:0.948, mae:495   },
+  expansao:   { nome:"Expansão",   cor:"#4f8ef7", b0:9616.38,  b1:633.44,  b2:-6.47,  b3:71.03,            r2:0.0959, mae:1071 },
+  formatacao: { nome:"Formatação", cor:"#3ecf8e", b0:7400.28,  b1:7400.28, b2:38.77,  b3:686.24, b4:53.12, r2:0.9487, mae:913  },
+  validacao:  { nome:"Validação",  cor:"#f0c96a", b0:14660.95, b1:343.44,  b2:12.79,  b3:12.00,            r2:0.5915, mae:243  },
 };
 
 let MODELOS = JSON.parse(JSON.stringify(DEFAULT));
@@ -1121,21 +1125,32 @@ function setSv(sv) {
   document.getElementById('sv-exp').className = 'sv-tab' + (sv==='expansao'   ? ' active-exp' : '');
   document.getElementById('sv-fmt').className = 'sv-tab' + (sv==='formatacao' ? ' active-fmt' : '');
   document.getElementById('sv-val').className = 'sv-tab' + (sv==='validacao'  ? ' active-val' : '');
+  // Formatação tem H_Advogado como variável do modelo
+  const ehFmt = sv === 'formatacao';
+  document.getElementById('sl-hadv-block').style.display = ehFmt ? 'block' : 'none';
+  document.getElementById('formula-texto').textContent = ehFmt
+    ? 'Custo = β₀ + β₁×Qtd + β₂×H + β₃×H_Adv + β₄×Mês'
+    : 'Custo = β₀ + β₁×Qtd + β₂×H + β₃×Mês';
   calcPreco();
 }
 
 function calcPreco() {
-  const qtd = +document.getElementById('sl-qtd').value;
-  const h   = +document.getElementById('sl-h').value;
-  const mes = +document.getElementById('sl-mes').value;
-  const mg  = +document.getElementById('sl-mg').value / 100;
-  document.getElementById('out-qtd').textContent = qtd;
-  document.getElementById('out-h').textContent   = h + 'h';
+  const qtd  = +document.getElementById('sl-qtd').value;
+  const h    = +document.getElementById('sl-h').value;
+  const hadv = +document.getElementById('sl-hadv').value;
+  const mes  = +document.getElementById('sl-mes').value;
+  const mg   = +document.getElementById('sl-mg').value / 100;
+  document.getElementById('out-qtd').textContent  = qtd;
+  document.getElementById('out-h').textContent    = h + 'h';
+  document.getElementById('out-hadv').textContent = hadv + 'h';
   document.getElementById('out-mes').textContent  = mes;
   document.getElementById('out-mg').textContent   = Math.round(mg*100) + '%';
 
   const m = MODELOS[currentSv];
-  const custo_total   = m.b0 + m.b1*qtd + m.b2*h + m.b3*mes;
+  // Formatação: ordem dos betas é Qtd, H_Total, H_Advogado, Num_Mes (b4 = mês)
+  const custo_total = currentSv === 'formatacao'
+    ? m.b0 + m.b1*qtd + m.b2*h + m.b3*hadv + (m.b4 || 0)*mes
+    : m.b0 + m.b1*qtd + m.b2*h + m.b3*mes;
   const custo_por_c   = custo_total / qtd;
   const preco_break   = custo_por_c;
   const preco_ideal   = custo_por_c / (1 - mg);
@@ -1465,6 +1480,26 @@ function atualizarVisaoGeral(resultados) {
     const el_r2 = document.getElementById(ids.r2);
     if (el_r2) { el_r2.textContent = r.r2 !== undefined ? r.r2 : el_r2.textContent; }
   });
+
+  // Alerta dinâmico: aponta serviços com margem negativa usando os números reais
+  const alertEl = document.getElementById('vg-alert');
+  if (alertEl) {
+    const nomes = { expansao: 'Expansão', formatacao: 'Formatação', validacao: 'Validação' };
+    const negativos = Object.entries(resultados).filter(([, r]) => r.margem_observada < 0);
+    if (negativos.length === 0) {
+      alertEl.style.display = 'none';
+    } else {
+      alertEl.style.display = '';
+      alertEl.innerHTML = negativos.map(([sv, r]) => {
+        const cpc   = Math.round(r.custo_por_contrato).toLocaleString('pt-BR');
+        const ideal = Math.round(r.preco_ideal_6).toLocaleString('pt-BR');
+        const mg    = (r.margem_observada * 100).toFixed(1);
+        return `<strong>Diagnóstico — ${nomes[sv] || sv}:</strong> margem média de ${mg}%. ` +
+               `O custo por contrato é <strong>R$${cpc}</strong>; para atingir a margem alvo de 6%, ` +
+               `o preço deve ser <strong>R$${ideal}</strong>.`;
+      }).join('<br>');
+    }
+  }
 }
 
 function _r2Cor(v) { return v >= 0.7 ? 'green' : v >= 0.3 ? 'yellow' : 'red'; }
@@ -1510,30 +1545,45 @@ function atualizarPaginasServico(resultados) {
     _set(`${p}-mae`,   _fmtRS(r.mae),           '');
     _set(`${p}-cpc`,   _fmtRS(r.custo_por_contrato), cpcCor);
 
-    // Betas
+    // Betas — Formatação: b3 = H_Advogado (/h), b4 = Num_Mes
     _set(`${p}-b0`, _fmtBeta(r.beta0));
     _set(`${p}-b1`, _fmtBeta(r.beta1) + '/ct');
     _set(`${p}-b2`, _fmtBeta(r.beta2) + '/h');
-    _set(`${p}-b3`, _fmtBeta(r.beta3));
-    if (b4 && r.beta4 != null) _set(`${p}-b4`, _fmtBeta(r.beta4) + '/h');
+    _set(`${p}-b3`, _fmtBeta(r.beta3) + (b4 ? '/h' : ''));
+    if (b4 && r.beta4 != null) _set(`${p}-b4`, _fmtBeta(r.beta4));
+
+    // Badges de p-value (significância igual ao código do Léo: <0.01***, <0.05**, <0.1*)
+    if (r.pvalues) {
+      const ordem = ['const'].concat(r.variaveis || []);
+      ordem.forEach((nome, i) => {
+        const badge = document.getElementById(`${p}-b${i}-badge`);
+        const pv = r.pvalues[nome];
+        if (!badge || pv === undefined) return;
+        badge.style.display = '';
+        badge.textContent = pv < 0.001 ? 'p<0.001' : `p=${pv.toFixed(3)}`;
+        badge.className = 'badge ' + (pv < 0.05 ? 'badge-green' : pv < 0.1 ? 'badge-yellow' : 'badge-gray');
+      });
+    }
 
     // Equação
     const eqEl = document.getElementById(`${p}-eq`);
     if (eqEl) {
       const v = r.variaveis || [];
       const betas = [r.beta0, r.beta1, r.beta2, r.beta3, r.beta4].filter(x => x != null);
-      const linhas = [`Custo = ${_fmtBeta(betas[0])}`];
+      const fmtN = x => Math.abs(x).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+      const linhas = [`Custo = ${betas[0] < 0 ? '−' : ''}${fmtN(betas[0])}`];
       v.forEach((nm, i) => {
         const b = betas[i+1];
-        if (b != null) linhas.push(`&nbsp;&nbsp;&nbsp;&nbsp;${b >= 0 ? '+' : ''}${_fmtBeta(b)} × ${nm}`);
+        if (b != null) linhas.push(`&nbsp;&nbsp;&nbsp;&nbsp;${b >= 0 ? '+' : '−'} ${fmtN(b)} × ${nm}`);
       });
       eqEl.innerHTML = linhas.join('<br>');
     }
     const noteEl = document.getElementById(`${p}-r2-note`);
     if (noteEl) noteEl.textContent = `R² = ${r.r2} — ajuste do modelo de custo.`;
 
-    // M2
-    _set(`${p}-m2-r2`,     r.r2,            _r2Cor(r.r2));
+    // M2 — usa o R² do modelo de margem (r2_m2), não o do modelo de custo
+    const r2m2 = r.r2_m2 !== undefined ? r.r2_m2 : r.r2;
+    _set(`${p}-m2-r2`,     r2m2,            _r2Cor(r2m2));
     _set(`${p}-m2-margem`, margem + '%',     mCor);
     _set(`${p}-m2-preco`,  _fmtRS(r.preco_ideal_6), '');
 
@@ -1561,6 +1611,7 @@ function atualizarModelos(resultados) {
     MODELOS[chave].b1  = r.beta1;
     MODELOS[chave].b2  = r.beta2;
     MODELOS[chave].b3  = r.beta3;
+    if (r.beta4 != null)     MODELOS[chave].b4  = r.beta4;
     if (r.r2  !== undefined) MODELOS[chave].r2  = r.r2;
     if (r.mae !== undefined) MODELOS[chave].mae = r.mae;
   });

@@ -6,6 +6,12 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "5500", "--directory", "frontend"],
       "port": 5500
+    },
+    {
+      "name": "app",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["backend/manage.py", "runserver", "8000", "--noreload"],
+      "port": 8000
     }
   ]
 }

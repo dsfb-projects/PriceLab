@@ -49,6 +49,8 @@ def upload_base(request):
         return Response({'erro': f'Erro ao processar a base: {str(e)}'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     # Salva coeficientes por serviço no banco (ignora chaves internas _preview/_meta)
+    _EXTRAS = ('pvalues', 'f_stat', 'f_pvalue', 'rmse', 'r2_m2', 'mae_m2_pp',
+               'variaveis', 'n_observacoes', 'preco_ideal_10', 'preco_ideal_15')
     for sv in _SERVICOS:
         if sv not in todos:
             continue
@@ -63,6 +65,7 @@ def upload_base(request):
             custo_por_contrato=d['custo_por_contrato'],
             preco_ideal_6=d['preco_ideal_6'],
             margem_observada=d['margem_observada'],
+            stats_extras={k: d[k] for k in _EXTRAS if k in d},
         )
 
     resultados = {sv: todos[sv] for sv in _SERVICOS if sv in todos}
@@ -88,6 +91,7 @@ def resultados_latest(request):
             'custo_por_contrato': r.custo_por_contrato,
             'preco_ideal_6': r.preco_ideal_6,
             'margem_observada': r.margem_observada,
+            **(r.stats_extras or {}),
         }
 
     # Recarrega o df do arquivo salvo para gerar o preview

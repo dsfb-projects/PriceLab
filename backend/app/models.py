@@ -38,6 +38,10 @@ class ResultadoRegressao(models.Model):
     # Elasticidades (JSON)
     elasticidades = models.JSONField(default=dict)
 
+    # Estatísticas adicionais do código final do Léo:
+    # pvalues, f_stat, f_pvalue, rmse, r2_m2, mae_m2_pp, variaveis, n_observacoes
+    stats_extras = models.JSONField(default=dict, blank=True)
+
     # Precificação
     custo_por_contrato = models.FloatField()
     preco_ideal_6 = models.FloatField()

@@ -12,7 +12,7 @@ e o wrapper rodar_regressao() que converte os resultados para o formato JSON da 
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
-from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -189,11 +189,20 @@ def carregar_df(caminho_excel):
     return df, aba_usada
 
 
-def _empacotar_resultado(m1, y1, agg, variaveis):
-    """Converte os objetos statsmodels para dict serializável pela API."""
+def _empacotar_resultado(m1, m2, y1, y2, agg, variaveis):
+    """
+    Converte os objetos statsmodels para dict serializável pela API.
+    Expõe as mesmas saídas que o imprimir_resultados() do código final do Léo:
+    p-values, F-stat, RMSE (Modelo 1) e R²/MAE do Modelo 2 (margem).
+    """
     p_ideal_6, cpc = preco_ideal(m1, agg, margem_alvo=0.06)
     elast = elasticidades(m1, agg, variaveis)
     mae = mean_absolute_error(y1, m1.fittedvalues)
+    rmse = float(np.sqrt(mean_squared_error(y1, m1.fittedvalues)))
+    mae_m2 = mean_absolute_error(y2, m2.fittedvalues)
+
+    names = ["const"] + variaveis
+    pvalues = {nm: round(float(p), 4) for nm, p in zip(names, m1.pvalues)}
 
     betas = list(m1.params)
     return {
@@ -207,6 +216,12 @@ def _empacotar_resultado(m1, y1, agg, variaveis):
         "r2":          round(float(m1.rsquared), 4),
         "r2_ajustado": round(float(m1.rsquared_adj), 4),
         "mae":         round(float(mae), 2),
+        "rmse":        round(rmse, 2),
+        "f_stat":      round(float(m1.fvalue), 2),
+        "f_pvalue":    round(float(m1.f_pvalue), 5),
+        "pvalues":     pvalues,
+        "r2_m2":       round(float(m2.rsquared), 4),
+        "mae_m2_pp":   round(float(mae_m2 * 100), 2),
         "elasticidades": {k: round(v, 4) for k, v in elast.items()},
         "custo_por_contrato": round(float(cpc), 2),
         "preco_ideal_6":      round(float(p_ideal_6), 2),
@@ -236,8 +251,8 @@ def rodar_regressao(caminho_excel):
         sub_exp  = df[df["Tipo_Servico"] == "Expansão"]
         agg_exp  = agregar(df, "Expansão")
         vars_exp = ["Qtd_Contratos", "H_Total", "Num_Mes"]
-        m1_exp, _, y1_exp, _ = rodar_ols(agg_exp, vars_exp)
-        r = _empacotar_resultado(m1_exp, y1_exp, agg_exp, vars_exp)
+        m1_exp, m2_exp, y1_exp, y2_exp = rodar_ols(agg_exp, vars_exp)
+        r = _empacotar_resultado(m1_exp, m2_exp, y1_exp, y2_exp, agg_exp, vars_exp)
         r["margem_observada"] = round(_margem_pct_media(sub_exp), 4)
         resultados["expansao"] = r
 
@@ -246,8 +261,8 @@ def rodar_regressao(caminho_excel):
         sub_fmt  = df[df["Tipo_Servico"] == "Formatação"]
         agg_fmt  = agregar(df, "Formatação")
         vars_fmt = ["Qtd_Contratos", "H_Total", "H_Advogado", "Num_Mes"]
-        m1_fmt, _, y1_fmt, _ = rodar_ols(agg_fmt, vars_fmt)
-        r = _empacotar_resultado(m1_fmt, y1_fmt, agg_fmt, vars_fmt)
+        m1_fmt, m2_fmt, y1_fmt, y2_fmt = rodar_ols(agg_fmt, vars_fmt)
+        r = _empacotar_resultado(m1_fmt, m2_fmt, y1_fmt, y2_fmt, agg_fmt, vars_fmt)
         r["margem_observada"] = round(_margem_pct_media(sub_fmt), 4)
         resultados["formatacao"] = r
 
@@ -256,8 +271,8 @@ def rodar_regressao(caminho_excel):
         sub_val  = df[df["Tipo_Servico"] == "Validação"]
         agg_val  = agregar(df, "Validação")
         vars_val = ["Qtd_Contratos", "H_Total", "Num_Mes"]
-        m1_val, _, y1_val, _ = rodar_ols(agg_val, vars_val)
-        r = _empacotar_resultado(m1_val, y1_val, agg_val, vars_val)
+        m1_val, m2_val, y1_val, y2_val = rodar_ols(agg_val, vars_val)
+        r = _empacotar_resultado(m1_val, m2_val, y1_val, y2_val, agg_val, vars_val)
         r["margem_observada"] = round(_margem_pct_media(sub_val), 4)
         resultados["validacao"] = r
 
